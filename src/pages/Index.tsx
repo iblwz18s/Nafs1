@@ -113,7 +113,8 @@ const Index = () => {
         {/* اختيار المعلم - فقط للصف الثالث رياضيات */}
         {selectedSubject && hasClassData && !selectedTeacher && (
           <TeacherSelector 
-            teacherName={teacher!.name} 
+            teacherName={teacher!.name}
+            teacherSubject={teacher!.subject}
             onSelect={() => setSelectedTeacher(true)} 
           />
         )}

@@ -3,10 +3,11 @@ import { User } from "lucide-react";
 
 interface TeacherSelectorProps {
   teacherName: string;
+  teacherSubject: string;
   onSelect: () => void;
 }
 
-const TeacherSelector = ({ teacherName, onSelect }: TeacherSelectorProps) => {
+const TeacherSelector = ({ teacherName, teacherSubject, onSelect }: TeacherSelectorProps) => {
   return (
     <div className="animate-fade-in">
       <div className="text-center mb-10">
@@ -24,7 +25,7 @@ const TeacherSelector = ({ teacherName, onSelect }: TeacherSelectorProps) => {
             </div>
             <div className="text-right flex-1">
               <h3 className="text-xl font-bold text-foreground">{teacherName}</h3>
-              <p className="text-muted-foreground text-sm">معلم الرياضيات</p>
+              <p className="text-muted-foreground text-sm">{teacherSubject}</p>
             </div>
           </CardContent>
         </Card>
