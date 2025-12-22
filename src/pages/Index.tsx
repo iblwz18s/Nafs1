@@ -58,7 +58,7 @@ const Index = () => {
         {!selectedGrade && (
           <div className="animate-fade-in">
             <div className="text-center mb-10">
-              <img src={logo} alt="شعار وزارة التعليم" className="h-28 md:h-36 mx-auto mb-6" />
+              <img src={logo} alt="شعار وزارة التعليم" className="h-40 md:h-56 lg:h-64 mx-auto mb-6" />
               <h2 className="text-3xl font-bold text-foreground mb-3">اختر الصف الدراسي</h2>
               <p className="text-muted-foreground">حدد صفك للبدء في الاختبارات المحاكية</p>
             </div>
