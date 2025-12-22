@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -6,61 +6,216 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getStandardById } from "@/data/standards";
 import { getQuestionsByStandard, Question } from "@/data/questions";
-import { ArrowRight, CheckCircle2, XCircle, Check, X, Lightbulb } from "lucide-react";
+import { ArrowRight, CheckCircle2, XCircle, Check, X, Lightbulb, Printer, FileText } from "lucide-react";
 
-// دالة لتوليد شرح الإجابة بناءً على نوع السؤال
-const generateExplanation = (question: Question): string => {
+// دالة لتوليد شرح تفصيلي للإجابة
+const generateDetailedExplanation = (question: Question, userAnswer: number): string => {
   const correctOption = question.options[question.correctAnswer];
+  const userOption = question.options[userAnswer];
   const arabicLetters = ["أ", "ب", "ج", "د"];
+  const isCorrect = userAnswer === question.correctAnswer;
   
-  // تحليل نص السؤال لتقديم شرح مناسب
+  // تحليل نوع السؤال وتقديم شرح مفصل
+  
+  // أسئلة المرادفات والأضداد
+  if (question.text.includes("مرادف")) {
+    const word = question.text.match(/كلمة\s*"([^"]+)"/)?.[1] || "";
+    if (isCorrect) {
+      return `أحسنت! "${correctOption}" هي المرادف الصحيح لكلمة "${word}". كلتا الكلمتين تحملان نفس المعنى ويمكن استخدامهما في نفس السياق.`;
+    }
+    return `الإجابة الصحيحة هي "${correctOption}" وليس "${userOption}". المرادف يعني الكلمة التي تحمل نفس المعنى. فكلمة "${word}" تعني "${correctOption}"، بينما "${userOption}" لها معنى مختلف.`;
+  }
+  
+  if (question.text.includes("ضد")) {
+    const word = question.text.match(/كلمة\s*"([^"]+)"/)?.[1] || "";
+    if (isCorrect) {
+      return `ممتاز! "${correctOption}" هي الكلمة المضادة لـ "${word}". الضد يعني الكلمة التي تحمل معنى عكسي تماماً.`;
+    }
+    return `الإجابة الصحيحة هي "${correctOption}". ضد الكلمة يعني عكسها في المعنى. فضد "${word}" هو "${correctOption}" لأنهما يحملان معنيين متعاكسين تماماً.`;
+  }
+
+  // أسئلة الجمع والمفرد
+  if (question.text.includes("الجمع") || question.text.includes("جمع")) {
+    if (isCorrect) {
+      return `صحيح! "${correctOption}" هي صيغة الجمع لأنها تدل على أكثر من اثنين. علامات الجمع: ـون، ـين للمذكر السالم، ـات للمؤنث السالم، أو تغيير في بنية الكلمة لجمع التكسير.`;
+    }
+    return `الإجابة الصحيحة هي "${correctOption}". الجمع يدل على أكثر من اثنين. "${userOption}" ليست جمعاً لأنها تدل على مفرد أو مثنى.`;
+  }
+
+  // أسئلة القيمة المنزلية
+  if (question.text.includes("القيمة المنزلية")) {
+    const number = question.text.match(/العدد\s*(\d+)/)?.[1] || "";
+    const digit = question.text.match(/الرقم\s*(\d)/)?.[1] || "";
+    if (isCorrect) {
+      return `ممتاز! في العدد ${number}، الرقم ${digit} يقع في منزلة ${correctOption}. المنازل من اليمين: آحاد، عشرات، مئات، ألوف، عشرات الألوف.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. لتحديد القيمة المنزلية، عد المنازل من اليمين: المنزلة الأولى آحاد، الثانية عشرات، الثالثة مئات، الرابعة ألوف. في العدد ${number}، الرقم ${digit} يقع في منزلة ${correctOption}.`;
+  }
+
+  // أسئلة العمليات الحسابية
   if (question.text.includes("ناتج") || question.text.includes("=")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. يمكنك التحقق من الناتج بإجراء العملية الحسابية خطوة بخطوة.`;
+    if (question.text.includes("+")) {
+      if (isCorrect) {
+        return `أحسنت! الناتج ${correctOption} صحيح. للتحقق: اجمع الأرقام من اليمين (الآحاد) أولاً، ثم العشرات، ثم المئات مع مراعاة الحمل إذا تجاوز الناتج 9.`;
+      }
+      return `الإجابة الصحيحة هي ${correctOption}. عند الجمع، ابدأ من الآحاد وانتقل يساراً. إذا تجاوز الناتج 9، احمل 1 للمنزلة التالية.`;
+    }
+    if (question.text.includes("-")) {
+      if (isCorrect) {
+        return `ممتاز! الناتج ${correctOption} صحيح. للتحقق: اطرح الأرقام من اليمين مع الاستلاف من المنزلة الأعلى عند الحاجة.`;
+      }
+      return `الإجابة الصحيحة هي ${correctOption}. عند الطرح، ابدأ من الآحاد. إذا كان الرقم العلوي أصغر، استلف 1 من المنزلة التالية (تصبح 10).`;
+    }
+    if (question.text.includes("×") || question.text.includes("*")) {
+      if (isCorrect) {
+        return `رائع! ${correctOption} هو الناتج الصحيح. الضرب هو جمع متكرر، مثلاً 4 × 5 يعني جمع 5 أربع مرات.`;
+      }
+      return `الإجابة الصحيحة هي ${correctOption}. تذكر جدول الضرب، أو استخدم الجمع المتكرر للتحقق.`;
+    }
+    if (question.text.includes("÷")) {
+      if (isCorrect) {
+        return `أحسنت! الناتج ${correctOption} صحيح. القسمة هي عكس الضرب، أي توزيع العدد بالتساوي.`;
+      }
+      return `الإجابة الصحيحة هي ${correctOption}. القسمة تعني التوزيع المتساوي. للتحقق: اضرب الناتج في المقسوم عليه، يجب أن يساوي المقسوم.`;
+    }
   }
-  
-  if (question.text.includes("مرادف") || question.text.includes("ضد")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. تذكر معاني الكلمات وعلاقاتها الدلالية.`;
-  }
-  
+
+  // أسئلة الكسور
   if (question.text.includes("كسر") || question.text.includes("كسور")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. عند مقارنة الكسور، حاول توحيد المقامات أو تحويلها لأعداد عشرية.`;
+    if (question.text.includes("يكافئ") || question.text.includes("متكافئ")) {
+      if (isCorrect) {
+        return `صحيح! الكسران متكافئان لأن لهما نفس القيمة. للتحقق: اضرب أو اقسم البسط والمقام بنفس العدد.`;
+      }
+      return `الإجابة الصحيحة هي ${correctOption}. الكسور المتكافئة لها نفس القيمة. مثلاً 1/2 = 2/4 لأننا ضربنا البسط والمقام في 2.`;
+    }
+    if (question.text.includes("أكبر") || question.text.includes("أصغر")) {
+      if (isCorrect) {
+        return `ممتاز! عند مقارنة الكسور بنفس المقام، الكسر ذو البسط الأكبر هو الأكبر. وعند تساوي البسط، الكسر ذو المقام الأصغر هو الأكبر.`;
+      }
+      return `الإجابة الصحيحة هي ${correctOption}. لمقارنة الكسور: إذا تساوت المقامات، قارن البسط. إذا تساوت البسوط، الكسر ذو المقام الأصغر أكبر (1/2 > 1/3).`;
+    }
   }
-  
+
+  // أسئلة المحيط والمساحة
   if (question.text.includes("محيط")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. المحيط = مجموع أطوال جميع الأضلاع.`;
+    if (isCorrect) {
+      return `أحسنت! المحيط = مجموع أطوال جميع الأضلاع. للمربع: المحيط = 4 × طول الضلع. للمستطيل: المحيط = 2 × (الطول + العرض).`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. المحيط هو مجموع أطوال جميع الأضلاع. راجع الأبعاد المعطاة واجمعها.`;
   }
-  
+
   if (question.text.includes("مساحة")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. تذكر قوانين المساحة: المربع = الضلع²، المستطيل = الطول × العرض.`;
+    if (isCorrect) {
+      return `ممتاز! مساحة المربع = الضلع × الضلع. مساحة المستطيل = الطول × العرض. المساحة تقاس بالوحدات المربعة.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. لحساب المساحة: المربع = الضلع²، المستطيل = الطول × العرض. راجع الأبعاد المعطاة.`;
   }
-  
-  if (question.text.includes("نمط") || question.text.includes("النمط")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. لإيجاد النمط، ابحث عن العلاقة بين الأعداد المتتالية.`;
-  }
-  
+
+  // أسئلة الوقت
   if (question.text.includes("ساعة") || question.text.includes("دقيقة") || question.text.includes("الوقت")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. تذكر: الساعة = 60 دقيقة، ربع ساعة = 15 دقيقة، نصف ساعة = 30 دقيقة.`;
+    if (isCorrect) {
+      return `صحيح! تذكر: الساعة = 60 دقيقة، نصف ساعة = 30 دقيقة، ربع ساعة = 15 دقيقة. اليوم = 24 ساعة.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. الساعة = 60 دقيقة. لحساب الوقت، حول جميع القيم لنفس الوحدة (دقائق) ثم أجرِ العملية.`;
   }
-  
-  if (question.text.includes("لتر") || question.text.includes("كيلو") || question.text.includes("جرام")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. تذكر: 1 كيلوجرام = 1000 جرام، 1 لتر = 1000 مليلتر.`;
+
+  // أسئلة القياس
+  if (question.text.includes("لتر") || question.text.includes("مليلتر")) {
+    if (isCorrect) {
+      return `أحسنت! 1 لتر = 1000 مليلتر. للتحويل من لتر إلى مليلتر اضرب في 1000، والعكس اقسم على 1000.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. تذكر: 1 لتر = 1000 مليلتر. استخدم هذه العلاقة في التحويل.`;
   }
-  
-  if (question.text.includes("ريال") || question.text.includes("نقود")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. استخدم الجمع والطرح لحساب المبالغ المالية.`;
+
+  if (question.text.includes("كيلو") || question.text.includes("جرام")) {
+    if (isCorrect) {
+      return `ممتاز! 1 كيلوجرام = 1000 جرام. للتحويل من كيلو إلى جرام اضرب في 1000.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. تذكر: 1 كيلوجرام = 1000 جرام. استخدم هذه العلاقة في الحل.`;
   }
-  
+
+  if (question.text.includes("سنتمتر") || question.text.includes("متر")) {
+    if (isCorrect) {
+      return `صحيح! 1 متر = 100 سنتمتر. للتحويل من متر إلى سنتمتر اضرب في 100.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. تذكر: 1 متر = 100 سنتمتر. استخدم هذه العلاقة في التحويل.`;
+  }
+
+  // أسئلة النقود
+  if (question.text.includes("ريال") || question.text.includes("نقود") || question.text.includes("مبلغ")) {
+    if (isCorrect) {
+      return `أحسنت! في المسائل المالية، استخدم الجمع لحساب المجموع والطرح لحساب الباقي أو الفرق.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. اقرأ المسألة بتمعن: هل المطلوب المجموع (جمع) أم الباقي (طرح) أم الفرق؟`;
+  }
+
+  // أسئلة الزوايا
   if (question.text.includes("زاوية") || question.text.includes("زوايا")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. الزاوية القائمة = 90°، الحادة < 90°، المنفرجة > 90°.`;
+    if (isCorrect) {
+      return `ممتاز! الزاوية القائمة = 90°، الزاوية الحادة < 90°، الزاوية المنفرجة > 90° و < 180°، الزاوية المستقيمة = 180°.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. أنواع الزوايا: القائمة = 90°، الحادة أقل من 90°، المنفرجة بين 90° و 180°.`;
   }
-  
+
+  // أسئلة النسبة المئوية
   if (question.text.includes("نسبة") || question.text.includes("%")) {
-    return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. النسبة المئوية = (الجزء ÷ الكل) × 100.`;
+    if (isCorrect) {
+      return `أحسنت! النسبة المئوية = (الجزء ÷ الكل) × 100. مثلاً: 25% تعني 25 من كل 100، أي ربع الكمية.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. لحساب النسبة المئوية: اقسم الجزء على الكل واضرب في 100.`;
   }
-  
-  // شرح عام
-  return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) ${correctOption}. راجع المفاهيم الأساسية المتعلقة بهذا السؤال.`;
+
+  // أسئلة الأنماط
+  if (question.text.includes("نمط") || question.text.includes("النمط") || question.text.includes("التسلسل")) {
+    if (isCorrect) {
+      return `ممتاز! لإيجاد النمط، ابحث عن العلاقة بين الأعداد المتتالية (جمع، طرح، ضرب، أو قسمة بقيمة ثابتة).`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. لإيجاد النمط: احسب الفرق أو النسبة بين كل عددين متتاليين لاكتشاف القاعدة.`;
+  }
+
+  // أسئلة الترتيب
+  if (question.text.includes("رتب") || question.text.includes("تصاعدي") || question.text.includes("تنازلي")) {
+    if (isCorrect) {
+      return `صحيح! الترتيب التصاعدي من الأصغر للأكبر، والتنازلي من الأكبر للأصغر. قارن الأرقام منزلة بمنزلة من اليسار.`;
+    }
+    return `الإجابة الصحيحة هي ${correctOption}. للترتيب: قارن عدد المنازل أولاً، ثم قارن الأرقام من اليسار.`;
+  }
+
+  // أسئلة الأفكار الصريحة
+  if (question.text.includes("متى") || question.text.includes("أين") || question.text.includes("من") || question.text.includes("ماذا") || question.text.includes("كم")) {
+    if (isCorrect) {
+      return `أحسنت! لقد استخرجت المعلومة الصحيحة من النص. دائماً ابحث عن الكلمات المفتاحية التي تجيب على السؤال مباشرة.`;
+    }
+    return `الإجابة الصحيحة هي "${correctOption}". اقرأ النص بعناية وابحث عن الكلمة أو العبارة التي تجيب مباشرة على السؤال المطروح.`;
+  }
+
+  // أسئلة التعبير الجمالي والحقيقة والرأي
+  if (question.text.includes("تعبير جمالي") || question.text.includes("تشبيه") || question.text.includes("مجاز")) {
+    if (isCorrect) {
+      return `ممتاز! التعبير الجمالي يستخدم الصور والتشبيهات لتجميل المعنى، مثل: "القمر مصباح الليل" يشبه القمر بالمصباح.`;
+    }
+    return `الإجابة الصحيحة هي "${correctOption}". التعبير الجمالي يتضمن تشبيهات واستعارات تُجمّل المعنى وتثري اللغة.`;
+  }
+
+  if (question.text.includes("حقيقة") || question.text.includes("رأي")) {
+    if (isCorrect) {
+      return `صحيح! الحقيقة يمكن إثباتها ولا تختلف من شخص لآخر، أما الرأي فهو وجهة نظر شخصية قد تختلف.`;
+    }
+    return `الإجابة الصحيحة هي "${correctOption}". الحقيقة ثابتة ويمكن التحقق منها، أما الرأي فيبدأ غالباً بـ "أعتقد" أو "في رأيي" ويختلف من شخص لآخر.`;
+  }
+
+  // شرح عام محسّن
+  if (isCorrect) {
+    return `إجابة صحيحة! "${correctOption}" هي الإجابة الصحيحة. استمر في التركيز وقراءة الأسئلة بعناية.`;
+  }
+  return `الإجابة الصحيحة هي (${arabicLetters[question.correctAnswer]}) "${correctOption}" وليس "${userOption}". راجع المفهوم المتعلق بهذا السؤال وحاول فهم الفرق بين الخيارات.`;
 };
+
+interface QuestionResult {
+  question: Question;
+  userAnswer: number;
+  isCorrect: boolean;
+}
 
 const Quiz = () => {
   const { standardId } = useParams<{ standardId: string }>();
@@ -71,6 +226,7 @@ const Quiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+  const reportRef = useRef<HTMLDivElement>(null);
 
   const standard = standardId ? getStandardById(standardId) : null;
   const questions = standardId ? getQuestionsByStandard(standardId) : [];
@@ -78,7 +234,7 @@ const Quiz = () => {
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
   const handleSelectAnswer = (index: number) => {
-    if (isAnswerSubmitted) return; // منع تغيير الإجابة بعد التأكيد
+    if (isAnswerSubmitted) return;
     setSelectedAnswer(index);
   };
 
@@ -112,7 +268,20 @@ const Quiz = () => {
     return correct;
   };
 
+  const getQuestionResults = (): QuestionResult[] => {
+    return questions.map((question, index) => ({
+      question,
+      userAnswer: answers[index],
+      isCorrect: answers[index] === question.correctAnswer
+    }));
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
   const isCorrect = selectedAnswer === currentQuestion?.correctAnswer;
+  const arabicLetters = ["أ", "ب", "ج", "د"];
 
   if (!standard || questions.length === 0) {
     return (
@@ -129,44 +298,195 @@ const Quiz = () => {
   if (showResult) {
     const score = calculateScore();
     const percentage = Math.round((score / questions.length) * 100);
+    const results = getQuestionResults();
+    
+    const getMasteryLevel = (percent: number) => {
+      if (percent >= 90) return { text: "متقن", color: "text-green-600 dark:text-green-400" };
+      if (percent >= 75) return { text: "جيد جداً", color: "text-blue-600 dark:text-blue-400" };
+      if (percent >= 60) return { text: "جيد", color: "text-yellow-600 dark:text-yellow-400" };
+      if (percent >= 50) return { text: "مقبول", color: "text-orange-600 dark:text-orange-400" };
+      return { text: "يحتاج تحسين", color: "text-red-600 dark:text-red-400" };
+    };
+
+    const mastery = getMasteryLevel(percentage);
     
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <div className="container mx-auto px-4 py-12">
-          <Card className="max-w-xl mx-auto shadow-medium animate-scale-in">
-            <CardContent className="p-8 text-center">
-              <div className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center ${percentage >= 60 ? 'bg-primary' : 'bg-destructive'}`}>
-                {percentage >= 60 ? (
-                  <CheckCircle2 className="w-12 h-12 text-primary-foreground" />
-                ) : (
-                  <XCircle className="w-12 h-12 text-destructive-foreground" />
-                )}
-              </div>
-              <h2 className="text-2xl font-bold text-foreground mb-2">نتيجة الاختبار</h2>
-              <p className="text-muted-foreground mb-6">{standard.name}</p>
-              <div className="text-5xl font-bold text-foreground mb-2">{percentage}%</div>
-              <p className="text-lg text-muted-foreground mb-6">
-                {score} من {questions.length} إجابات صحيحة
-              </p>
-              <div className="flex gap-4 justify-center">
-                <Button onClick={() => navigate("/")} variant="outline">
-                  العودة للرئيسية
-                </Button>
-                <Button onClick={() => {
-                  setCurrentQuestionIndex(0);
-                  setAnswers([]);
-                  setSelectedAnswer(null);
-                  setShowResult(false);
-                  setShowFeedback(false);
-                  setIsAnswerSubmitted(false);
-                }} className="btn-primary-gradient">
-                  إعادة الاختبار
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="container mx-auto px-4 py-8">
+          {/* تقرير الطباعة */}
+          <div ref={reportRef} className="print:block">
+            {/* ملخص النتيجة */}
+            <Card className="max-w-4xl mx-auto shadow-medium animate-scale-in mb-8">
+              <CardContent className="p-8">
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className={`w-32 h-32 rounded-full flex items-center justify-center flex-shrink-0 ${percentage >= 60 ? 'bg-primary' : 'bg-destructive'}`}>
+                    {percentage >= 60 ? (
+                      <CheckCircle2 className="w-16 h-16 text-primary-foreground" />
+                    ) : (
+                      <XCircle className="w-16 h-16 text-destructive-foreground" />
+                    )}
+                  </div>
+                  <div className="flex-1 text-center md:text-right">
+                    <h2 className="text-3xl font-bold text-foreground mb-2">تقرير نتيجة الاختبار</h2>
+                    <p className="text-lg text-muted-foreground mb-4">{standard.name}</p>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                      <div className="bg-muted/50 rounded-lg p-4">
+                        <p className="text-sm text-muted-foreground">النسبة المئوية</p>
+                        <p className="text-3xl font-bold text-foreground">{percentage}%</p>
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-4">
+                        <p className="text-sm text-muted-foreground">الإجابات الصحيحة</p>
+                        <p className="text-3xl font-bold text-green-600">{score}</p>
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-4">
+                        <p className="text-sm text-muted-foreground">الإجابات الخاطئة</p>
+                        <p className="text-3xl font-bold text-red-600">{questions.length - score}</p>
+                      </div>
+                      <div className="bg-muted/50 rounded-lg p-4">
+                        <p className="text-sm text-muted-foreground">مستوى الإتقان</p>
+                        <p className={`text-xl font-bold ${mastery.color}`}>{mastery.text}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* أزرار التحكم */}
+                <div className="flex flex-wrap gap-4 justify-center mt-8 print:hidden">
+                  <Button onClick={() => navigate("/")} variant="outline">
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                    العودة للرئيسية
+                  </Button>
+                  <Button onClick={() => {
+                    setCurrentQuestionIndex(0);
+                    setAnswers([]);
+                    setSelectedAnswer(null);
+                    setShowResult(false);
+                    setShowFeedback(false);
+                    setIsAnswerSubmitted(false);
+                  }} className="btn-primary-gradient">
+                    إعادة الاختبار
+                  </Button>
+                  <Button onClick={handlePrint} variant="outline" className="gap-2">
+                    <Printer className="w-4 h-4" />
+                    طباعة التقرير
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* التقرير التفصيلي */}
+            <Card className="max-w-4xl mx-auto shadow-soft">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <FileText className="w-6 h-6 text-primary" />
+                  <h3 className="text-xl font-bold text-foreground">التقرير التفصيلي للأسئلة</h3>
+                </div>
+
+                <div className="space-y-6">
+                  {results.map((result, index) => (
+                    <div 
+                      key={result.question.id} 
+                      className={`p-4 rounded-lg border-2 ${
+                        result.isCorrect 
+                          ? 'bg-green-500/5 border-green-500/30' 
+                          : 'bg-red-500/5 border-red-500/30'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          result.isCorrect ? 'bg-green-500' : 'bg-red-500'
+                        }`}>
+                          {result.isCorrect ? (
+                            <Check className="w-5 h-5 text-white" />
+                          ) : (
+                            <X className="w-5 h-5 text-white" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-sm font-medium text-muted-foreground">السؤال {index + 1}</span>
+                            <span className={`text-xs px-2 py-0.5 rounded-full ${
+                              result.isCorrect 
+                                ? 'bg-green-500/20 text-green-700 dark:text-green-400' 
+                                : 'bg-red-500/20 text-red-700 dark:text-red-400'
+                            }`}>
+                              {result.isCorrect ? 'صحيح' : 'خاطئ'}
+                            </span>
+                          </div>
+                          <p className="font-medium text-foreground mb-3">{result.question.text}</p>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+                            {result.question.options.map((option, optIndex) => {
+                              const isUserChoice = optIndex === result.userAnswer;
+                              const isCorrectOption = optIndex === result.question.correctAnswer;
+                              
+                              let optionClass = "text-muted-foreground";
+                              if (isCorrectOption) optionClass = "text-green-700 dark:text-green-400 font-medium";
+                              if (isUserChoice && !result.isCorrect) optionClass = "text-red-700 dark:text-red-400 line-through";
+                              
+                              return (
+                                <div key={optIndex} className={`flex items-center gap-2 text-sm ${optionClass}`}>
+                                  <span>{arabicLetters[optIndex]}.</span>
+                                  <span>{option}</span>
+                                  {isCorrectOption && <Check className="w-4 h-4 text-green-600" />}
+                                  {isUserChoice && !result.isCorrect && <X className="w-4 h-4 text-red-600" />}
+                                </div>
+                              );
+                            })}
+                          </div>
+
+                          <div className={`p-3 rounded-lg ${
+                            result.isCorrect 
+                              ? 'bg-green-500/10' 
+                              : 'bg-amber-500/10'
+                          }`}>
+                            <div className="flex items-start gap-2">
+                              <Lightbulb className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
+                                result.isCorrect ? 'text-green-600' : 'text-amber-600'
+                              }`} />
+                              <p className="text-sm text-foreground">
+                                {generateDetailedExplanation(result.question, result.userAnswer)}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* ملخص نهائي للطباعة */}
+                <div className="mt-8 p-4 bg-muted/50 rounded-lg print:block hidden">
+                  <p className="text-center text-muted-foreground">
+                    تاريخ الاختبار: {new Date().toLocaleDateString('ar-SA')} | 
+                    المعيار: {standard.name} | 
+                    النتيجة: {score}/{questions.length} ({percentage}%)
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
+
+        {/* أنماط الطباعة */}
+        <style>{`
+          @media print {
+            body * {
+              visibility: visible;
+            }
+            .print\\:hidden {
+              display: none !important;
+            }
+            .print\\:block {
+              display: block !important;
+            }
+            @page {
+              margin: 1cm;
+            }
+          }
+        `}</style>
       </div>
     );
   }
@@ -220,7 +540,7 @@ const Quiz = () => {
                       className={`w-full text-right p-4 rounded-lg border-2 transition-all duration-200 flex items-center justify-between ${buttonStyle} ${isAnswerSubmitted ? 'cursor-default' : 'cursor-pointer'}`}
                     >
                       <div className="flex items-center">
-                        <span className="font-medium ml-3">{["أ", "ب", "ج", "د"][index]}.</span>
+                        <span className="font-medium ml-3">{arabicLetters[index]}.</span>
                         {option}
                       </div>
                       {showFeedback && isCorrectOption && (
@@ -235,7 +555,7 @@ const Quiz = () => {
               </div>
 
               {/* صندوق التغذية الراجعة */}
-              {showFeedback && (
+              {showFeedback && selectedAnswer !== null && (
                 <div className={`mt-6 p-4 rounded-lg border-2 animate-fade-in ${isCorrect ? 'bg-green-500/10 border-green-500' : 'bg-amber-500/10 border-amber-500'}`}>
                   <div className="flex items-start gap-3">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${isCorrect ? 'bg-green-500' : 'bg-amber-500'}`}>
@@ -249,8 +569,8 @@ const Quiz = () => {
                       <h4 className={`font-bold mb-1 ${isCorrect ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-400'}`}>
                         {isCorrect ? "إجابة صحيحة! أحسنت" : "إجابة خاطئة"}
                       </h4>
-                      <p className="text-foreground text-sm">
-                        {generateExplanation(currentQuestion)}
+                      <p className="text-foreground text-sm leading-relaxed">
+                        {generateDetailedExplanation(currentQuestion, selectedAnswer)}
                       </p>
                     </div>
                   </div>
