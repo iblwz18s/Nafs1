@@ -7,6 +7,7 @@ export interface Question {
   text: string;
   options: string[];
   correctAnswer: number; // فهرس الإجابة الصحيحة (0-3)
+  image?: string; // صورة توضيحية اختيارية
 }
 
 export interface Quiz {
@@ -4388,6 +4389,14 @@ export const questions: Question[] = [
     text: "الغابات مهمة لأنها:",
     options: ["تنتج الأكسجين وتمتص ثاني أكسيد الكربون", "غير مفيدة", "تزيد التلوث", "تقلل الأمطار"],
     correctAnswer: 0,
+  },
+  {
+    id: "q-s6-32-11",
+    standardId: "std-s6-32",
+    text: "بناءً على الشكل المعروض تنتمي الألماسة إلى:",
+    options: ["المصادر المتجددة", "الوقود الاحفوري", "مواد البناء", "المعادن"],
+    correctAnswer: 3,
+    image: "/assets/diamond.png",
   },
 
   // معيار 33: التلوث البيئي (std-s6-33)
