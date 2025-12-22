@@ -4,24 +4,40 @@ import Header from "@/components/Header";
 import GradeCard from "@/components/GradeCard";
 import SubjectCard from "@/components/SubjectCard";
 import StandardCard from "@/components/StandardCard";
+import TeacherSelector from "@/components/TeacherSelector";
+import StudentSelector from "@/components/StudentSelector";
 import { Button } from "@/components/ui/button";
 import { grades, getSubjectsByGrade, getStandardsBySubject, getGradeById, getSubjectById } from "@/data/standards";
 import { ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { teacherData, studentsData } from "@/data/classData";
 
 const Index = () => {
   const navigate = useNavigate();
   const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<boolean>(false);
+  const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
 
   const subjects = selectedGrade ? getSubjectsByGrade(selectedGrade) : [];
   const standards = selectedSubject ? getStandardsBySubject(selectedSubject) : [];
   const currentGrade = selectedGrade ? getGradeById(selectedGrade) : null;
   const currentSubject = selectedSubject ? getSubjectById(selectedSubject) : null;
 
+  // Check if this grade+subject has teacher/student selection
+  const hasClassData = selectedGrade === "grade3" && selectedSubject === "grade3-math";
+  const teacher = hasClassData ? teacherData["grade3-math"] : null;
+  const students = hasClassData ? studentsData["grade3-math"] : null;
+
   const handleBack = () => {
-    if (selectedSubject) {
+    if (hasClassData && selectedStudent) {
+      setSelectedStudent(null);
+    } else if (hasClassData && selectedTeacher) {
+      setSelectedTeacher(false);
+    } else if (selectedSubject) {
       setSelectedSubject(null);
+      setSelectedTeacher(false);
+      setSelectedStudent(null);
     } else if (selectedGrade) {
       setSelectedGrade(null);
     }
@@ -93,10 +109,32 @@ const Index = () => {
           </div>
         )}
 
+        {/* اختيار المعلم - فقط للصف الثالث رياضيات */}
+        {selectedSubject && hasClassData && !selectedTeacher && (
+          <TeacherSelector 
+            teacherName={teacher!.name} 
+            onSelect={() => setSelectedTeacher(true)} 
+          />
+        )}
+
+        {/* اختيار الطالب */}
+        {selectedSubject && hasClassData && selectedTeacher && !selectedStudent && (
+          <StudentSelector 
+            students={students!} 
+            onSelect={(student) => setSelectedStudent(student)} 
+          />
+        )}
+
         {/* عرض المعايير */}
-        {selectedSubject && (
+        {selectedSubject && (!hasClassData || (selectedTeacher && selectedStudent)) && (
           <div className="animate-fade-in">
             <div className="text-center mb-10">
+              {selectedStudent && (
+                <div className="mb-4 bg-primary/10 rounded-lg p-3 inline-block">
+                  <p className="text-muted-foreground text-sm">الطالب:</p>
+                  <p className="text-primary font-bold">{selectedStudent}</p>
+                </div>
+              )}
               <h2 className="text-3xl font-bold text-foreground mb-3">معايير {currentSubject?.name}</h2>
               <p className="text-muted-foreground">اختر المعيار لبدء الاختبار</p>
             </div>
