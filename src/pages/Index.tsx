@@ -48,7 +48,12 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div 
+      className="min-h-screen bg-background bg-cover bg-center bg-no-repeat bg-fixed"
+      style={{ backgroundImage: "url('/images/nafs-background.jpeg')" }}
+    >
+      {/* طبقة شفافة لتحسين قراءة المحتوى */}
+      <div className="min-h-screen bg-background/85 dark:bg-background/90">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
@@ -154,9 +159,10 @@ const Index = () => {
         )}
       </main>
 
-      <footer className="py-6 text-center text-muted-foreground border-t border-border mt-12">
+      <footer className="py-6 text-center text-muted-foreground border-t border-border/50 mt-12">
         <p>ابتدائية سعد بن أبي وقاص © {new Date().getFullYear()}</p>
       </footer>
+      </div>
     </div>
   );
 };
