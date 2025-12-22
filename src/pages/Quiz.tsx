@@ -568,6 +568,18 @@ const Quiz = () => {
           <Card className="shadow-soft animate-fade-in">
             <CardContent className="p-6">
               <h3 className="text-xl font-bold text-foreground mb-6">{currentQuestion.text}</h3>
+              
+              {/* عرض صورة السؤال إن وجدت */}
+              {currentQuestion.image && (
+                <div className="mb-6 flex justify-center">
+                  <img 
+                    src={currentQuestion.image} 
+                    alt="صورة توضيحية للسؤال" 
+                    className="max-w-xs rounded-lg border border-border shadow-sm"
+                  />
+                </div>
+              )}
+              
               <div className="space-y-3">
                 {currentQuestion.options.map((option, index) => {
                   const isSelected = selectedAnswer === index;
