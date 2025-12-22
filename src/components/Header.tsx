@@ -1,20 +1,15 @@
-import { BookOpen } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   return (
-    <header className="gradient-hero text-primary-foreground py-6 px-4 shadow-medium">
+    <header className="bg-background py-4 px-4 shadow-medium border-b border-border">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-            <BookOpen className="w-8 h-8" />
-          </div>
+          <img src={logo} alt="شعار وزارة التعليم" className="h-16 md:h-20" />
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold">مدرستي</h1>
-            <p className="text-sm opacity-90">ابتدائية سعد بن أبي وقاص</p>
+            <h1 className="text-xl md:text-2xl font-bold text-primary">ابتدائية سعد بن أبي وقاص</h1>
+            <p className="text-sm text-muted-foreground">اختبارات محاكية لاختبارات نافس الوطنية</p>
           </div>
-        </div>
-        <div className="text-left hidden md:block">
-          <p className="text-sm opacity-80">اختبارات محاكية لاختبارات نافس الوطنية</p>
         </div>
       </div>
     </header>

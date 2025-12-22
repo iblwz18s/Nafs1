@@ -1391,6 +1391,42 @@ export const questions: Question[] = [
     options: ["الأسماء فقط", "الأعداد الكمية", "الألوان فقط", "الصور فقط"],
     correctAnswer: 1,
   },
+
+  // ====== أسئلة المعايير الناقصة ======
+  // معيار: التمييز بين عبارات النص - الصف السادس
+  { id: "q-r6-3-1", standardId: "std-r6-3", text: "أي العبارات التالية تعبير مجازي؟", options: ["الشمس مشرقة", "العلم نور", "السماء زرقاء", "الماء بارد"], correctAnswer: 1 },
+  { id: "q-r6-3-2", standardId: "std-r6-3", text: "\"القلم سيف المثقف\". ما نوع هذه العبارة؟", options: ["حقيقة علمية", "تعبير جمالي", "خبر صحفي", "تعبير عادي"], correctAnswer: 1 },
+  { id: "q-r6-3-3", standardId: "std-r6-3", text: "أي الجمل التالية تعبر عن رأي؟", options: ["الأرض كروية", "أعتقد أن القراءة مفيدة", "الماء يغلي عند 100 درجة", "السنة 12 شهراً"], correctAnswer: 1 },
+  { id: "q-r6-3-4", standardId: "std-r6-3", text: "ما الفرق بين الحقيقة والرأي؟", options: ["لا فرق", "الحقيقة يمكن إثباتها", "الرأي أهم", "الحقيقة شخصية"], correctAnswer: 1 },
+  { id: "q-r6-3-5", standardId: "std-r6-3", text: "\"الأم شمعة تحترق\". ما الصورة الجمالية؟", options: ["التشبيه", "الحقيقة", "الإخبار", "السرد"], correctAnswer: 0 },
+
+  // معيار: إجراء العمليات على الكسور
+  { id: "q-m6-3-1", standardId: "std-m6-3", text: "ما ناتج 1/4 + 2/4؟", options: ["1/4", "2/4", "3/4", "4/4"], correctAnswer: 2 },
+  { id: "q-m6-3-2", standardId: "std-m6-3", text: "ما ناتج 3/5 - 1/5؟", options: ["1/5", "2/5", "3/5", "4/5"], correctAnswer: 1 },
+  { id: "q-m6-3-3", standardId: "std-m6-3", text: "ما ناتج 1/2 × 1/3؟", options: ["1/5", "1/6", "2/5", "2/6"], correctAnswer: 1 },
+  { id: "q-m6-3-4", standardId: "std-m6-3", text: "ما ناتج 0.5 + 0.25؟", options: ["0.25", "0.50", "0.75", "1.00"], correctAnswer: 2 },
+  { id: "q-m6-3-5", standardId: "std-m6-3", text: "ما ناتج 2/3 ÷ 1/3؟", options: ["1", "2", "3", "6"], correctAnswer: 1 },
+
+  // معيار: العمليات على الأعداد الصحيحة
+  { id: "q-m6-4-1", standardId: "std-m6-4", text: "ما ناتج (-5) + 3؟", options: ["-8", "-2", "2", "8"], correctAnswer: 1 },
+  { id: "q-m6-4-2", standardId: "std-m6-4", text: "ما ناتج (-3) × (-4)؟", options: ["-12", "-7", "7", "12"], correctAnswer: 3 },
+  { id: "q-m6-4-3", standardId: "std-m6-4", text: "ما ناتج 8 - 15؟", options: ["-7", "7", "-23", "23"], correctAnswer: 0 },
+  { id: "q-m6-4-4", standardId: "std-m6-4", text: "ما ناتج (-20) ÷ 5؟", options: ["-4", "4", "-15", "15"], correctAnswer: 0 },
+  { id: "q-m6-4-5", standardId: "std-m6-4", text: "أي عدد أكبر: -5 أم -3؟", options: ["-5", "-3", "متساويان", "لا يمكن"], correctAnswer: 1 },
+
+  // معيار: خصائص العمليات - الصف الثالث
+  { id: "q-m3-7-1", standardId: "std-m3-7", text: "ما ناتج 5 + 0؟", options: ["0", "5", "50", "10"], correctAnswer: 1 },
+  { id: "q-m3-7-2", standardId: "std-m3-7", text: "ما ناتج 7 × 1؟", options: ["1", "7", "8", "0"], correctAnswer: 1 },
+  { id: "q-m3-7-3", standardId: "std-m3-7", text: "ما ناتج 9 - 0؟", options: ["0", "9", "90", "1"], correctAnswer: 1 },
+  { id: "q-m3-7-4", standardId: "std-m3-7", text: "ما ناتج 6 × 0؟", options: ["0", "6", "60", "1"], correctAnswer: 0 },
+  { id: "q-m3-7-5", standardId: "std-m3-7", text: "ما ناتج 8 ÷ 1؟", options: ["1", "8", "0", "9"], correctAnswer: 1 },
+
+  // معيار: العلاقات بين العمليات
+  { id: "q-m3-8-1", standardId: "std-m3-8", text: "إذا كان 5 + 3 = 8، فما ناتج 8 - 3؟", options: ["3", "5", "8", "11"], correctAnswer: 1 },
+  { id: "q-m3-8-2", standardId: "std-m3-8", text: "إذا كان 6 × 4 = 24، فما ناتج 24 ÷ 6؟", options: ["3", "4", "5", "6"], correctAnswer: 1 },
+  { id: "q-m3-8-3", standardId: "std-m3-8", text: "ما العملية العكسية للجمع؟", options: ["الجمع", "الطرح", "الضرب", "القسمة"], correctAnswer: 1 },
+  { id: "q-m3-8-4", standardId: "std-m3-8", text: "ما العملية العكسية للضرب؟", options: ["الجمع", "الطرح", "الضرب", "القسمة"], correctAnswer: 3 },
+  { id: "q-m3-8-5", standardId: "std-m3-8", text: "إذا كان 12 - 7 = 5، فما ناتج 7 + 5؟", options: ["5", "7", "12", "2"], correctAnswer: 2 },
 ];
 
 // دالة للحصول على أسئلة معيار معين
