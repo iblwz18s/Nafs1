@@ -7,6 +7,7 @@ import StandardCard from "@/components/StandardCard";
 import { Button } from "@/components/ui/button";
 import { grades, getSubjectsByGrade, getStandardsBySubject, getGradeById, getSubjectById } from "@/data/standards";
 import { ArrowRight } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -57,6 +58,7 @@ const Index = () => {
         {!selectedGrade && (
           <div className="animate-fade-in">
             <div className="text-center mb-10">
+              <img src={logo} alt="شعار وزارة التعليم" className="h-28 md:h-36 mx-auto mb-6" />
               <h2 className="text-3xl font-bold text-foreground mb-3">اختر الصف الدراسي</h2>
               <p className="text-muted-foreground">حدد صفك للبدء في الاختبارات المحاكية</p>
             </div>
