@@ -228,6 +228,9 @@ const Quiz = () => {
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
 
+  // الحصول على اسم الطالب من sessionStorage
+  const studentName = sessionStorage.getItem('selectedStudent') || '';
+
   const standard = standardId ? getStandardById(standardId) : null;
   const questions = standardId ? getQuestionsByStandard(standardId) : [];
   const currentQuestion = questions[currentQuestionIndex];
@@ -317,36 +320,50 @@ const Quiz = () => {
           {/* تقرير الطباعة */}
           <div ref={reportRef} className="print:block">
             {/* ملخص النتيجة */}
-            <Card className="max-w-4xl mx-auto shadow-medium animate-scale-in mb-8">
-              <CardContent className="p-8">
-                <div className="flex flex-col md:flex-row items-center gap-8">
-                  <div className={`w-32 h-32 rounded-full flex items-center justify-center flex-shrink-0 ${percentage >= 60 ? 'bg-primary' : 'bg-destructive'}`}>
+            <Card className="max-w-4xl mx-auto shadow-medium animate-scale-in mb-8 print:shadow-none print:mb-4">
+              <CardContent className="p-8 print:p-4">
+                {/* رأس التقرير للطباعة */}
+                <div className="hidden print:block text-center mb-4 border-b pb-4">
+                  <h1 className="text-xl font-bold">ابتدائية سعد بن أبي وقاص</h1>
+                  <p className="text-sm text-muted-foreground">تقرير اختبار محاكي لاختبارات نافس</p>
+                </div>
+
+                {/* اسم الطالب */}
+                {studentName && (
+                  <div className="text-center mb-6 p-4 bg-primary/10 rounded-lg print:bg-transparent print:border print:border-primary print:p-2 print:mb-2">
+                    <p className="text-sm text-muted-foreground">اسم الطالب</p>
+                    <p className="text-2xl font-bold text-primary print:text-lg">{studentName}</p>
+                  </div>
+                )}
+
+                <div className="flex flex-col md:flex-row items-center gap-8 print:gap-4 print:flex-row">
+                  <div className={`w-32 h-32 print:w-16 print:h-16 rounded-full flex items-center justify-center flex-shrink-0 ${percentage >= 60 ? 'bg-primary' : 'bg-destructive'}`}>
                     {percentage >= 60 ? (
-                      <CheckCircle2 className="w-16 h-16 text-primary-foreground" />
+                      <CheckCircle2 className="w-16 h-16 print:w-8 print:h-8 text-primary-foreground" />
                     ) : (
-                      <XCircle className="w-16 h-16 text-destructive-foreground" />
+                      <XCircle className="w-16 h-16 print:w-8 print:h-8 text-destructive-foreground" />
                     )}
                   </div>
                   <div className="flex-1 text-center md:text-right">
-                    <h2 className="text-3xl font-bold text-foreground mb-2">تقرير نتيجة الاختبار</h2>
-                    <p className="text-lg text-muted-foreground mb-4">{standard.name}</p>
+                    <h2 className="text-3xl print:text-lg font-bold text-foreground mb-2">تقرير نتيجة الاختبار</h2>
+                    <p className="text-lg print:text-sm text-muted-foreground mb-4 print:mb-2">{standard.name}</p>
                     
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                      <div className="bg-muted/50 rounded-lg p-4">
-                        <p className="text-sm text-muted-foreground">النسبة المئوية</p>
-                        <p className="text-3xl font-bold text-foreground">{percentage}%</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 print:gap-2 mt-6 print:mt-2">
+                      <div className="bg-muted/50 rounded-lg p-4 print:p-2">
+                        <p className="text-sm print:text-xs text-muted-foreground">النسبة المئوية</p>
+                        <p className="text-3xl print:text-lg font-bold text-foreground">{percentage}%</p>
                       </div>
-                      <div className="bg-muted/50 rounded-lg p-4">
-                        <p className="text-sm text-muted-foreground">الإجابات الصحيحة</p>
-                        <p className="text-3xl font-bold text-green-600">{score}</p>
+                      <div className="bg-muted/50 rounded-lg p-4 print:p-2">
+                        <p className="text-sm print:text-xs text-muted-foreground">الإجابات الصحيحة</p>
+                        <p className="text-3xl print:text-lg font-bold text-green-600">{score}</p>
                       </div>
-                      <div className="bg-muted/50 rounded-lg p-4">
-                        <p className="text-sm text-muted-foreground">الإجابات الخاطئة</p>
-                        <p className="text-3xl font-bold text-red-600">{questions.length - score}</p>
+                      <div className="bg-muted/50 rounded-lg p-4 print:p-2">
+                        <p className="text-sm print:text-xs text-muted-foreground">الإجابات الخاطئة</p>
+                        <p className="text-3xl print:text-lg font-bold text-red-600">{questions.length - score}</p>
                       </div>
-                      <div className="bg-muted/50 rounded-lg p-4">
-                        <p className="text-sm text-muted-foreground">مستوى الإتقان</p>
-                        <p className={`text-xl font-bold ${mastery.color}`}>{mastery.text}</p>
+                      <div className="bg-muted/50 rounded-lg p-4 print:p-2">
+                        <p className="text-sm print:text-xs text-muted-foreground">مستوى الإتقان</p>
+                        <p className={`text-xl print:text-sm font-bold ${mastery.color}`}>{mastery.text}</p>
                       </div>
                     </div>
                   </div>
@@ -458,9 +475,10 @@ const Quiz = () => {
                 </div>
 
                 {/* ملخص نهائي للطباعة */}
-                <div className="mt-8 p-4 bg-muted/50 rounded-lg print:block hidden">
-                  <p className="text-center text-muted-foreground">
+                <div className="mt-4 p-2 bg-muted/50 rounded-lg print:block hidden border-t">
+                  <p className="text-center text-muted-foreground text-xs">
                     تاريخ الاختبار: {new Date().toLocaleDateString('ar-SA')} | 
+                    {studentName && ` الطالب: ${studentName} |`}
                     المعيار: {standard.name} | 
                     النتيجة: {score}/{questions.length} ({percentage}%)
                   </p>
@@ -473,6 +491,10 @@ const Quiz = () => {
         {/* أنماط الطباعة */}
         <style>{`
           @media print {
+            body {
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+            }
             body * {
               visibility: visible;
             }
@@ -483,7 +505,40 @@ const Quiz = () => {
               display: block !important;
             }
             @page {
-              margin: 1cm;
+              margin: 0.5cm;
+              size: A4;
+            }
+            .space-y-6 > * {
+              page-break-inside: avoid;
+              margin-bottom: 8px !important;
+            }
+            .space-y-6 {
+              gap: 8px !important;
+            }
+            p, h3, h4 {
+              font-size: 10px !important;
+              line-height: 1.3 !important;
+            }
+            .text-xl {
+              font-size: 12px !important;
+            }
+            .text-2xl, .text-3xl {
+              font-size: 14px !important;
+            }
+            .p-4 {
+              padding: 6px !important;
+            }
+            .p-3 {
+              padding: 4px !important;
+            }
+            .mb-3, .mb-4, .mb-6 {
+              margin-bottom: 4px !important;
+            }
+            .gap-4, .gap-6 {
+              gap: 4px !important;
+            }
+            .rounded-lg {
+              border-radius: 4px !important;
             }
           }
         `}</style>

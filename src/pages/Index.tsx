@@ -25,9 +25,9 @@ const Index = () => {
   const currentSubject = selectedSubject ? getSubjectById(selectedSubject) : null;
 
   // Check if this grade+subject has teacher/student selection
-  const hasClassData = selectedGrade === "grade-3" && selectedSubject === "math-3";
-  const teacher = hasClassData ? teacherData["grade3-math"] : null;
-  const students = hasClassData ? studentsData["grade3-math"] : null;
+  const hasClassData = selectedGrade === "grade-3" && (selectedSubject === "math-3" || selectedSubject === "reading-3");
+  const teacher = hasClassData && selectedSubject ? teacherData[selectedSubject] : null;
+  const classStudents = hasClassData && selectedSubject ? studentsData[selectedSubject] : null;
 
   const handleBack = () => {
     if (hasClassData && selectedStudent) {
@@ -120,7 +120,7 @@ const Index = () => {
         {/* اختيار الطالب */}
         {selectedSubject && hasClassData && selectedTeacher && !selectedStudent && (
           <StudentSelector 
-            students={students!} 
+            students={classStudents!} 
             onSelect={(student) => setSelectedStudent(student)} 
           />
         )}

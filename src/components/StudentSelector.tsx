@@ -25,6 +25,8 @@ const StudentSelector = ({ students, onSelect }: StudentSelectorProps) => {
 
   const handleConfirm = () => {
     if (selectedStudent) {
+      // حفظ اسم الطالب في sessionStorage للاستخدام في صفحة الاختبار
+      sessionStorage.setItem('selectedStudent', selectedStudent);
       onSelect(selectedStudent);
     }
   };
