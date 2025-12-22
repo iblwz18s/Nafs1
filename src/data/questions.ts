@@ -7,6 +7,7 @@ export interface Question {
   text: string;
   options: string[];
   correctAnswer: number; // فهرس الإجابة الصحيحة (0-3)
+  image?: string; // رابط الصورة (اختياري)
 }
 
 export interface Quiz {
