@@ -1427,6 +1427,211 @@ export const questions: Question[] = [
   { id: "q-m3-8-3", standardId: "std-m3-8", text: "ما العملية العكسية للجمع؟", options: ["الجمع", "الطرح", "الضرب", "القسمة"], correctAnswer: 1 },
   { id: "q-m3-8-4", standardId: "std-m3-8", text: "ما العملية العكسية للضرب؟", options: ["الجمع", "الطرح", "الضرب", "القسمة"], correctAnswer: 3 },
   { id: "q-m3-8-5", standardId: "std-m3-8", text: "إذا كان 12 - 7 = 5، فما ناتج 7 + 5؟", options: ["5", "7", "12", "2"], correctAnswer: 2 },
+
+  // ====== معايير الرياضيات الصف السادس المتبقية ======
+  // تقدير النسبة المئوية والجذور
+  { id: "q-m6-6-1", standardId: "std-m6-6", text: "قدّر 48% من 200", options: ["حوالي 50", "حوالي 100", "حوالي 150", "حوالي 200"], correctAnswer: 1 },
+  { id: "q-m6-6-2", standardId: "std-m6-6", text: "ما الجذر التربيعي لـ 81؟", options: ["7", "8", "9", "10"], correctAnswer: 2 },
+  { id: "q-m6-6-3", standardId: "std-m6-6", text: "قدّر الجذر التربيعي لـ 50", options: ["بين 5 و 6", "بين 6 و 7", "بين 7 و 8", "بين 8 و 9"], correctAnswer: 2 },
+  { id: "q-m6-6-4", standardId: "std-m6-6", text: "ما الجذر التربيعي لـ 144؟", options: ["10", "11", "12", "13"], correctAnswer: 2 },
+  { id: "q-m6-6-5", standardId: "std-m6-6", text: "قدّر 33% من 90", options: ["حوالي 20", "حوالي 30", "حوالي 40", "حوالي 50"], correctAnswer: 1 },
+
+  // المتتابعة الحسابية
+  { id: "q-m6-7-1", standardId: "std-m6-7", text: "ما الحد السابع في: 2، 5، 8، 11، ...؟", options: ["17", "20", "23", "26"], correctAnswer: 1 },
+  { id: "q-m6-7-2", standardId: "std-m6-7", text: "ما أساس المتتابعة: 4، 9، 14، 19؟", options: ["3", "4", "5", "6"], correctAnswer: 2 },
+  { id: "q-m6-7-3", standardId: "std-m6-7", text: "أوجد الحد العاشر في: 1، 4، 7، 10...", options: ["25", "28", "31", "34"], correctAnswer: 1 },
+  { id: "q-m6-7-4", standardId: "std-m6-7", text: "ما العدد التالي: 3، 7، 11، 15؟", options: ["17", "18", "19", "20"], correctAnswer: 2 },
+  { id: "q-m6-7-5", standardId: "std-m6-7", text: "هل 3، 6، 12، 24 متتابعة حسابية؟", options: ["نعم", "لا", "أحياناً", "غير معروف"], correctAnswer: 1 },
+
+  // العلاقة بين متغيرين
+  { id: "q-m6-8-1", standardId: "std-m6-8", text: "إذا كان ص = 2س، وس = 3، فما ص؟", options: ["5", "6", "8", "9"], correctAnswer: 1 },
+  { id: "q-m6-8-2", standardId: "std-m6-8", text: "ما مدى الدالة ص = 2س إذا كان المجال {1، 2، 3}؟", options: ["{1، 2، 3}", "{2، 4، 6}", "{3، 6، 9}", "{1، 4، 9}"], correctAnswer: 1 },
+  { id: "q-m6-8-3", standardId: "std-m6-8", text: "إذا كانت العلاقة عكسية، ماذا يحدث للسعر عند زيادة الكمية؟", options: ["يزيد", "ينقص", "يبقى ثابتاً", "يتضاعف"], correctAnswer: 1 },
+  { id: "q-m6-8-4", standardId: "std-m6-8", text: "أي نقطة تقع على ص = س + 2؟", options: ["(1، 2)", "(2، 4)", "(3، 4)", "(0، 0)"], correctAnswer: 1 },
+  { id: "q-m6-8-5", standardId: "std-m6-8", text: "إذا كان ص = س - 1، وس = 5، فما ص؟", options: ["3", "4", "5", "6"], correctAnswer: 1 },
+
+  // تبسيط العبارات الجبرية
+  { id: "q-m6-9-1", standardId: "std-m6-9", text: "بسّط: 3س + 5س", options: ["8س", "15س", "8س²", "2س"], correctAnswer: 0 },
+  { id: "q-m6-9-2", standardId: "std-m6-9", text: "ما قيمة 2س + 3 إذا كان س = 4؟", options: ["9", "10", "11", "12"], correctAnswer: 2 },
+  { id: "q-m6-9-3", standardId: "std-m6-9", text: "بسّط: 7ص - 3ص + 2", options: ["4ص + 2", "10ص + 2", "4ص - 2", "10ص - 2"], correctAnswer: 0 },
+  { id: "q-m6-9-4", standardId: "std-m6-9", text: "ما قيمة 3أ - 2ب إذا كان أ = 5 وب = 3؟", options: ["6", "9", "12", "15"], correctAnswer: 1 },
+  { id: "q-m6-9-5", standardId: "std-m6-9", text: "بسّط: 2(س + 3)", options: ["2س + 3", "2س + 6", "س + 6", "2س + 5"], correctAnswer: 1 },
+
+  // حل المعادلات والمتباينات
+  { id: "q-m6-10-1", standardId: "std-m6-10", text: "حل: س + 5 = 12", options: ["س = 5", "س = 7", "س = 12", "س = 17"], correctAnswer: 1 },
+  { id: "q-m6-10-2", standardId: "std-m6-10", text: "حل: 2س = 14", options: ["س = 5", "س = 6", "س = 7", "س = 8"], correctAnswer: 2 },
+  { id: "q-m6-10-3", standardId: "std-m6-10", text: "أي قيمة تحقق س > 5؟", options: ["3", "4", "5", "6"], correctAnswer: 3 },
+  { id: "q-m6-10-4", standardId: "std-m6-10", text: "حل: 3س - 4 = 11", options: ["س = 3", "س = 4", "س = 5", "س = 6"], correctAnswer: 2 },
+  { id: "q-m6-10-5", standardId: "std-m6-10", text: "حل المتباينة: س - 2 ≤ 3", options: ["س ≤ 1", "س ≤ 5", "س ≥ 5", "س ≥ 1"], correctAnswer: 1 },
+
+  // الزوايا
+  { id: "q-m6-11-1", standardId: "std-m6-11", text: "ما نوع الزاوية 90°؟", options: ["حادة", "منفرجة", "قائمة", "مستقيمة"], correctAnswer: 2 },
+  { id: "q-m6-11-2", standardId: "std-m6-11", text: "ما مجموع زوايا المثلث؟", options: ["90°", "180°", "270°", "360°"], correctAnswer: 1 },
+  { id: "q-m6-11-3", standardId: "std-m6-11", text: "إذا كانت زاوية 60° ومتتامتها، فما الأخرى؟", options: ["30°", "60°", "90°", "120°"], correctAnswer: 0 },
+  { id: "q-m6-11-4", standardId: "std-m6-11", text: "ما نوع الزاوية 135°؟", options: ["حادة", "قائمة", "منفرجة", "مستقيمة"], correctAnswer: 2 },
+  { id: "q-m6-11-5", standardId: "std-m6-11", text: "إذا كانت زاويتان متكاملتان وإحداهما 110°؟", options: ["50°", "60°", "70°", "80°"], correctAnswer: 2 },
+
+  // الأشكال الهندسية
+  { id: "q-m6-12-1", standardId: "std-m6-12", text: "كم ضلعاً للشكل السداسي؟", options: ["4", "5", "6", "7"], correctAnswer: 2 },
+  { id: "q-m6-12-2", standardId: "std-m6-12", text: "ما مجموع زوايا الرباعي؟", options: ["180°", "270°", "360°", "540°"], correctAnswer: 2 },
+  { id: "q-m6-12-3", standardId: "std-m6-12", text: "مثلث زواياه 60°، 60°، 60° هو:", options: ["متساوي الساقين", "متساوي الأضلاع", "قائم", "مختلف الأضلاع"], correctAnswer: 1 },
+  { id: "q-m6-12-4", standardId: "std-m6-12", text: "ما القطر في الدائرة؟", options: ["نصف المحيط", "أطول وتر يمر بالمركز", "المحيط", "المساحة"], correctAnswer: 1 },
+  { id: "q-m6-12-5", standardId: "std-m6-12", text: "كم وجهاً للمنشور الثلاثي؟", options: ["3", "4", "5", "6"], correctAnswer: 2 },
+
+  // المستوى الإحداثي
+  { id: "q-m6-13-1", standardId: "std-m6-13", text: "في أي ربع تقع (3، -2)؟", options: ["الأول", "الثاني", "الثالث", "الرابع"], correctAnswer: 3 },
+  { id: "q-m6-13-2", standardId: "std-m6-13", text: "ما إحداثيات نقطة الأصل؟", options: ["(1، 1)", "(0، 0)", "(1، 0)", "(0، 1)"], correctAnswer: 1 },
+  { id: "q-m6-13-3", standardId: "std-m6-13", text: "إذا انعكست (2، 3) حول محور السينات؟", options: ["(-2، 3)", "(2، -3)", "(-2، -3)", "(3، 2)"], correctAnswer: 1 },
+  { id: "q-m6-13-4", standardId: "std-m6-13", text: "في أي ربع تقع (-4، 5)؟", options: ["الأول", "الثاني", "الثالث", "الرابع"], correctAnswer: 1 },
+  { id: "q-m6-13-5", standardId: "std-m6-13", text: "إذا انسحبت (1، 2) 3 وحدات لليمين؟", options: ["(4، 2)", "(1، 5)", "(-2، 2)", "(1، -1)"], correctAnswer: 0 },
+
+  // وحدات القياس
+  { id: "q-m6-14-1", standardId: "std-m6-14", text: "كم سنتيمتر في المتر؟", options: ["10", "100", "1000", "10000"], correctAnswer: 1 },
+  { id: "q-m6-14-2", standardId: "std-m6-14", text: "حوّل 5 كيلومتر إلى أمتار:", options: ["50 م", "500 م", "5000 م", "50000 م"], correctAnswer: 2 },
+  { id: "q-m6-14-3", standardId: "std-m6-14", text: "كم دقيقة في 3 ساعات؟", options: ["120", "150", "180", "200"], correctAnswer: 2 },
+  { id: "q-m6-14-4", standardId: "std-m6-14", text: "حوّل 2500 جرام إلى كيلوجرام:", options: ["0.25 كجم", "2.5 كجم", "25 كجم", "250 كجم"], correctAnswer: 1 },
+  { id: "q-m6-14-5", standardId: "std-m6-14", text: "أي وحدة لطول ملعب كرة قدم؟", options: ["ملليمتر", "سنتيمتر", "متر", "كيلومتر"], correctAnswer: 2 },
+
+  // المحيط والمساحة
+  { id: "q-m6-15-1", standardId: "std-m6-15", text: "ما محيط دائرة نصف قطرها 7 سم؟ (ط=22/7)", options: ["22 سم", "44 سم", "88 سم", "154 سم"], correctAnswer: 1 },
+  { id: "q-m6-15-2", standardId: "std-m6-15", text: "ما مساحة مثلث قاعدته 10 وارتفاعه 6؟", options: ["16 سم²", "30 سم²", "60 سم²", "100 سم²"], correctAnswer: 1 },
+  { id: "q-m6-15-3", standardId: "std-m6-15", text: "ما مساحة متوازي أضلاع قاعدته 8 وارتفاعه 5؟", options: ["13 سم²", "26 سم²", "40 سم²", "80 سم²"], correctAnswer: 2 },
+  { id: "q-m6-15-4", standardId: "std-m6-15", text: "ما محيط مستطيل 12×8؟", options: ["20 سم", "40 سم", "96 سم", "192 سم"], correctAnswer: 1 },
+  { id: "q-m6-15-5", standardId: "std-m6-15", text: "ما مساحة دائرة نصف قطرها 5 سم؟", options: ["31.4 سم²", "78.5 سم²", "157 سم²", "314 سم²"], correctAnswer: 1 },
+
+  // الحجم والمساحة السطحية
+  { id: "q-m6-16-1", standardId: "std-m6-16", text: "ما حجم مكعب ضلعه 4 سم؟", options: ["16 سم³", "48 سم³", "64 سم³", "96 سم³"], correctAnswer: 2 },
+  { id: "q-m6-16-2", standardId: "std-m6-16", text: "ما حجم متوازي مستطيلات 3×4×5؟", options: ["12 سم³", "35 سم³", "47 سم³", "60 سم³"], correctAnswer: 3 },
+  { id: "q-m6-16-3", standardId: "std-m6-16", text: "ما وحدة قياس الحجم؟", options: ["سم", "سم²", "سم³", "سم⁴"], correctAnswer: 2 },
+  { id: "q-m6-16-4", standardId: "std-m6-16", text: "كم لتراً في 1000 سم³؟", options: ["1 لتر", "10 لتر", "100 لتر", "1000 لتر"], correctAnswer: 0 },
+  { id: "q-m6-16-5", standardId: "std-m6-16", text: "ما المساحة السطحية لمكعب ضلعه 3 سم؟", options: ["27 سم²", "36 سم²", "54 سم²", "81 سم²"], correctAnswer: 2 },
+
+  // البيانات والتمثيلات
+  { id: "q-m6-17-1", standardId: "std-m6-17", text: "أي تمثيل لإظهار التغير عبر الزمن؟", options: ["الدائري", "الخطي", "الأعمدة", "النقطي"], correctAnswer: 1 },
+  { id: "q-m6-17-2", standardId: "std-m6-17", text: "ما نوع البيانات: (أحمر، أخضر، أزرق)؟", options: ["كمية", "نوعية", "رقمية", "ترتيبية"], correctAnswer: 1 },
+  { id: "q-m6-17-3", standardId: "std-m6-17", text: "أي تمثيل للنسب المئوية؟", options: ["الخطي", "الأعمدة", "الدائري", "النقطي"], correctAnswer: 2 },
+  { id: "q-m6-17-4", standardId: "std-m6-17", text: "ماذا يمثل عمود التكرار؟", options: ["الفئات", "عدد التكرار", "النسبة", "المجموع"], correctAnswer: 1 },
+  { id: "q-m6-17-5", standardId: "std-m6-17", text: "ما نوع البيانات: (15، 20، 25، 30)؟", options: ["نوعية", "كمية", "وصفية", "لونية"], correctAnswer: 1 },
+
+  // مقاييس النزعة المركزية
+  { id: "q-m6-18-1", standardId: "std-m6-18", text: "ما المتوسط الحسابي لـ 4، 6، 8، 10، 12؟", options: ["6", "7", "8", "9"], correctAnswer: 2 },
+  { id: "q-m6-18-2", standardId: "std-m6-18", text: "ما الوسيط لـ 3، 5، 7، 9، 11؟", options: ["5", "7", "9", "35"], correctAnswer: 1 },
+  { id: "q-m6-18-3", standardId: "std-m6-18", text: "ما المنوال لـ 2، 3، 3، 4، 5، 3، 6؟", options: ["2", "3", "4", "5"], correctAnswer: 1 },
+  { id: "q-m6-18-4", standardId: "std-m6-18", text: "ما المدى لـ 10، 15، 20، 25، 30؟", options: ["10", "15", "20", "25"], correctAnswer: 2 },
+  { id: "q-m6-18-5", standardId: "std-m6-18", text: "إذا مجموع 5 أعداد = 45، فما المتوسط؟", options: ["7", "8", "9", "10"], correctAnswer: 2 },
+
+  // الاحتمالات
+  { id: "q-m6-19-1", standardId: "std-m6-19", text: "ما احتمال ظهور عدد زوجي بالنرد؟", options: ["1/6", "1/3", "1/2", "2/3"], correctAnswer: 2 },
+  { id: "q-m6-19-2", standardId: "std-m6-19", text: "كم ناتج ممكن لرمي قطعة نقود مرتين؟", options: ["2", "3", "4", "6"], correctAnswer: 2 },
+  { id: "q-m6-19-3", standardId: "std-m6-19", text: "ما احتمال ظهور 5 بالنرد؟", options: ["1/2", "1/3", "1/5", "1/6"], correctAnswer: 3 },
+  { id: "q-m6-19-4", standardId: "std-m6-19", text: "في كيس 3 حمراء و2 زرقاء، احتمال الحمراء؟", options: ["2/5", "3/5", "1/2", "1/3"], correctAnswer: 1 },
+  { id: "q-m6-19-5", standardId: "std-m6-19", text: "مجموع احتمال حادثة وعدم وقوعها؟", options: ["0", "1/2", "1", "2"], correctAnswer: 2 },
+
+  // ====== معايير العلوم الصف السادس المتبقية ======
+  // الخلية النباتية والحيوانية
+  { id: "q-s6-2-1", standardId: "std-s6-2", text: "ما الموجود في النباتية فقط؟", options: ["النواة", "الميتوكوندريا", "البلاستيدات الخضراء", "الغشاء"], correctAnswer: 2 },
+  { id: "q-s6-2-2", standardId: "std-s6-2", text: "ما وظيفة الجدار الخلوي؟", options: ["الطاقة", "البناء الضوئي", "الدعم والحماية", "التنفس"], correctAnswer: 2 },
+  { id: "q-s6-2-3", standardId: "std-s6-2", text: "لماذا النباتية أكبر عادة؟", options: ["أقدم", "الفجوة المركزية", "أقوى", "النواة"], correctAnswer: 1 },
+  { id: "q-s6-2-4", standardId: "std-s6-2", text: "ما الصبغة الخضراء؟", options: ["الميلانين", "الكلوروفيل", "الهيموجلوبين", "الكاروتين"], correctAnswer: 1 },
+  { id: "q-s6-2-5", standardId: "std-s6-2", text: "أين يتم البناء الضوئي؟", options: ["النواة", "الميتوكوندريا", "البلاستيدات", "الريبوسومات"], correctAnswer: 2 },
+
+  // أجهزة الجسم
+  { id: "q-s6-3-1", standardId: "std-s6-3", text: "ما العضو الرئيسي للجهاز الدوري؟", options: ["الرئة", "المعدة", "القلب", "الكلية"], correctAnswer: 2 },
+  { id: "q-s6-3-2", standardId: "std-s6-3", text: "ما وظيفة الجهاز التنفسي؟", options: ["هضم الطعام", "تبادل الغازات", "ضخ الدم", "التفكير"], correctAnswer: 1 },
+  { id: "q-s6-3-3", standardId: "std-s6-3", text: "أين يتم الهضم الرئيسي؟", options: ["الفم", "المريء", "المعدة والأمعاء", "الكبد"], correctAnswer: 2 },
+  { id: "q-s6-3-4", standardId: "std-s6-3", text: "ما العضو الذي ينقي الدم؟", options: ["القلب", "الكبد", "الكلية", "الرئة"], correctAnswer: 2 },
+  { id: "q-s6-3-5", standardId: "std-s6-3", text: "ما الجهاز المتحكم بالجسم؟", options: ["الهضمي", "الدوري", "العصبي", "التنفسي"], correctAnswer: 2 },
+
+  // دورات الحياة
+  { id: "q-s6-4-1", standardId: "std-s6-4", text: "مراحل دورة الفراشة الصحيحة؟", options: ["بيضة-يرقة-شرنقة-فراشة", "بيضة-فراشة-يرقة-شرنقة", "يرقة-بيضة-فراشة-شرنقة", "شرنقة-يرقة-بيضة-فراشة"], correctAnswer: 0 },
+  { id: "q-s6-4-2", standardId: "std-s6-4", text: "ما نوع تحول الضفدع؟", options: ["ناقص", "كامل", "لا يوجد", "جزئي"], correctAnswer: 1 },
+  { id: "q-s6-4-3", standardId: "std-s6-4", text: "ماذا يسمى صغير الضفدع؟", options: ["يرقة", "شرنقة", "أبو ذنيبة", "فرخ"], correctAnswer: 2 },
+  { id: "q-s6-4-4", standardId: "std-s6-4", text: "ما بداية دورة النبات الزهري؟", options: ["الزهرة", "البذرة", "الثمرة", "الورقة"], correctAnswer: 1 },
+  { id: "q-s6-4-5", standardId: "std-s6-4", text: "أي حيوان له تحول ناقص؟", options: ["الفراشة", "الجراد", "الضفدع", "البعوض"], correctAnswer: 1 },
+
+  // تصنيف المخلوقات
+  { id: "q-s6-5-1", standardId: "std-s6-5", text: "الفرق بين الزهرية وغير الزهرية؟", options: ["اللون", "الأزهار والبذور", "الحجم", "المكان"], correctAnswer: 1 },
+  { id: "q-s6-5-2", standardId: "std-s6-5", text: "أي مما يلي لافقاري؟", options: ["السمكة", "الطائر", "الحشرة", "الثعبان"], correctAnswer: 2 },
+  { id: "q-s6-5-3", standardId: "std-s6-5", text: "ما مملكة الفطريات؟", options: ["الحيوانات", "النباتات", "الفطريات", "البكتيريا"], correctAnswer: 2 },
+  { id: "q-s6-5-4", standardId: "std-s6-5", text: "أي مما يلي من الثدييات؟", options: ["التمساح", "الحوت", "السلحفاة", "الضفدع"], correctAnswer: 1 },
+  { id: "q-s6-5-5", standardId: "std-s6-5", text: "ما يميز الطيور؟", options: ["التنفس", "الريش", "الحركة", "الغذاء"], correctAnswer: 1 },
+
+  // المجتمع الحيوي
+  { id: "q-s6-6-1", standardId: "std-s6-6", text: "ما المجتمع الحيوي؟", options: ["فرد واحد", "جماعة واحدة", "جميع الجماعات في منطقة", "النظام كله"], correctAnswer: 2 },
+  { id: "q-s6-6-2", standardId: "std-s6-6", text: "ما الجماعة الحيوية؟", options: ["أفراد من نفس النوع", "أنواع مختلفة", "النظام البيئي", "الموطن"], correctAnswer: 0 },
+  { id: "q-s6-6-3", standardId: "std-s6-6", text: "ما يحدد بقاء الكائنات؟", options: ["الحجم", "الغذاء والماء والمأوى", "اللون", "السرعة"], correctAnswer: 1 },
+  { id: "q-s6-6-4", standardId: "std-s6-6", text: "ماذا يحدث إذا زادت المفترسات؟", options: ["تزداد الفرائس", "تنقص الفرائس", "لا تغيير", "تزداد النباتات"], correctAnswer: 1 },
+  { id: "q-s6-6-5", standardId: "std-s6-6", text: "ما علاقة التنافس؟", options: ["تعاون", "صراع على الموارد", "مساعدة", "افتراس"], correctAnswer: 1 },
+
+  // تدوير المادة
+  { id: "q-s6-8-1", standardId: "std-s6-8", text: "ما دور المنتجات؟", options: ["تأكل كائنات", "تصنع غذاءها", "تحلل المواد", "تفترس"], correctAnswer: 1 },
+  { id: "q-s6-8-2", standardId: "std-s6-8", text: "أي مما يلي مستهلك ثانٍ؟", options: ["النبات", "الأرنب", "الثعلب", "البكتيريا"], correctAnswer: 2 },
+  { id: "q-s6-8-3", standardId: "std-s6-8", text: "كيف تنتقل الطاقة؟", options: ["من المستهلك للمنتج", "من المنتج للمستهلك", "عشوائياً", "لا تنتقل"], correctAnswer: 1 },
+  { id: "q-s6-8-4", standardId: "std-s6-8", text: "نسبة الطاقة المنتقلة تقريباً؟", options: ["100%", "50%", "10%", "1%"], correctAnswer: 2 },
+  { id: "q-s6-8-5", standardId: "std-s6-8", text: "ما الشبكة الغذائية؟", options: ["سلسلة واحدة", "سلاسل متداخلة", "نوع واحد", "غذاء النباتات"], correctAnswer: 1 },
+
+  // التكيفات
+  { id: "q-s6-9-1", standardId: "std-s6-9", text: "تكيف الجمل لتحمل العطش؟", options: ["تركيبي", "سلوكي", "فسيولوجي", "مؤقت"], correctAnswer: 2 },
+  { id: "q-s6-9-2", standardId: "std-s6-9", text: "لماذا تهاجر الطيور؟", options: ["للعب", "للتكيف مع المناخ", "للسباحة", "بدون سبب"], correctAnswer: 1 },
+  { id: "q-s6-9-3", standardId: "std-s6-9", text: "تكيف الشوك في الصبار؟", options: ["سلوكي", "تركيبي", "فسيولوجي", "مؤقت"], correctAnswer: 1 },
+  { id: "q-s6-9-4", standardId: "std-s6-9", text: "تكيف الدب القطبي للبرد؟", options: ["الفرو السميك", "الهجرة", "تغيير اللون", "التخفي"], correctAnswer: 0 },
+  { id: "q-s6-9-5", standardId: "std-s6-9", text: "ماذا يحدث للكائنات غير المتكيفة؟", options: ["تزدهر", "تنقرض أو تهاجر", "تتكاثر أكثر", "لا شيء"], correctAnswer: 1 },
+
+  // تأثير الإنسان
+  { id: "q-s6-10-1", standardId: "std-s6-10", text: "أي تأثير سلبي للإنسان؟", options: ["زراعة الأشجار", "المحميات", "التلوث", "إعادة التدوير"], correctAnswer: 2 },
+  { id: "q-s6-10-2", standardId: "std-s6-10", text: "أثر إزالة الغابات؟", options: ["زيادة الأكسجين", "انقراض الحيوانات", "تحسن المناخ", "زيادة المطر"], correctAnswer: 1 },
+  { id: "q-s6-10-3", standardId: "std-s6-10", text: "أي تأثير إيجابي للإنسان؟", options: ["الصيد الجائر", "التلوث", "إنشاء المحميات", "قطع الأشجار"], correctAnswer: 2 },
+  { id: "q-s6-10-4", standardId: "std-s6-10", text: "أثر التلوث على الكائنات المائية؟", options: ["تزدهر", "تموت أو تهاجر", "تتكاثر أكثر", "لا تتأثر"], correctAnswer: 1 },
+  { id: "q-s6-10-5", standardId: "std-s6-10", text: "أهمية إعادة التدوير؟", options: ["تزيد التلوث", "تقلل النفايات", "تزيد الاستهلاك", "لا فائدة"], correctAnswer: 1 },
+
+  // الصفات الوراثية
+  { id: "q-s6-11-1", standardId: "std-s6-11", text: "ما الصفة الوراثية؟", options: ["مكتسبة", "تنتقل من الآباء للأبناء", "من البيئة", "مؤقتة"], correctAnswer: 1 },
+  { id: "q-s6-11-2", standardId: "std-s6-11", text: "أي مما يلي صفة وراثية؟", options: ["لون العيون", "اللغة", "الجنسية", "المهنة"], correctAnswer: 0 },
+  { id: "q-s6-11-3", standardId: "std-s6-11", text: "الفرق بين السائدة والمتنحية؟", options: ["لا فرق", "السائدة تظهر دائماً", "المتنحية تظهر دائماً", "كلاهما يختفي"], correctAnswer: 1 },
+  { id: "q-s6-11-4", standardId: "std-s6-11", text: "أين توجد الجينات؟", options: ["الدم", "الكروموسومات", "العضلات", "العظام"], correctAnswer: 1 },
+  { id: "q-s6-11-5", standardId: "std-s6-11", text: "هل تؤثر البيئة في الصفات الوراثية؟", options: ["لا أبداً", "نعم أحياناً", "دائماً", "في النباتات فقط"], correctAnswer: 1 },
+
+  // خصائص المادة
+  { id: "q-s6-12-1", standardId: "std-s6-12", text: "أي خاصية فيزيائية؟", options: ["الاشتعال", "الصدأ", "اللون", "التفاعل مع الحمض"], correctAnswer: 2 },
+  { id: "q-s6-12-2", standardId: "std-s6-12", text: "ما التغير الكيميائي؟", options: ["تغير الشكل", "تكوّن مادة جديدة", "تغير الحجم", "تغير الحالة"], correctAnswer: 1 },
+  { id: "q-s6-12-3", standardId: "std-s6-12", text: "أي تغير فيزيائي؟", options: ["احتراق الخشب", "صدأ الحديد", "ذوبان الثلج", "تعفن الطعام"], correctAnswer: 2 },
+  { id: "q-s6-12-4", standardId: "std-s6-12", text: "ماذا يحدث للجزيئات عند التسخين؟", options: ["تتقارب", "تتباعد", "لا تتغير", "تختفي"], correctAnswer: 1 },
+  { id: "q-s6-12-5", standardId: "std-s6-12", text: "دليل حدوث تفاعل كيميائي؟", options: ["تغير اللون أو إنتاج غاز", "تغير الحجم فقط", "لا دليل", "تغير الكتلة"], correctAnswer: 0 },
+
+  // الطاقة والشغل
+  { id: "q-s6-14-1", standardId: "std-s6-14", text: "تعريف الشغل في الفيزياء؟", options: ["أي جهد", "قوة × مسافة", "حركة", "طاقة"], correctAnswer: 1 },
+  { id: "q-s6-14-2", standardId: "std-s6-14", text: "وحدة قياس الطاقة؟", options: ["النيوتن", "الجول", "الواط", "المتر"], correctAnswer: 1 },
+  { id: "q-s6-14-3", standardId: "std-s6-14", text: "ما الطاقة الحركية؟", options: ["طاقة الساكن", "طاقة المتحرك", "طاقة الوضع", "طاقة الحرارة"], correctAnswer: 1 },
+  { id: "q-s6-14-4", standardId: "std-s6-14", text: "قانون حفظ الطاقة؟", options: ["تفنى", "تتحول ولا تفنى", "ثابتة دائماً", "تختفي"], correctAnswer: 1 },
+  { id: "q-s6-14-5", standardId: "std-s6-14", text: "ما طاقة الوضع؟", options: ["طاقة الحركة", "طاقة مخزنة بسبب الموقع", "طاقة الحرارة", "طاقة الضوء"], correctAnswer: 1 },
+
+  // الموجات والضوء والصوت
+  { id: "q-s6-15-1", standardId: "std-s6-15", text: "نوع موجات الصوت؟", options: ["مستعرضة", "طولية", "كهرومغناطيسية", "ضوئية"], correctAnswer: 1 },
+  { id: "q-s6-15-2", standardId: "std-s6-15", text: "ماذا يحدث عند انعكاس الضوء؟", options: ["ينكسر", "يرتد عن السطح", "ينفذ", "يختفي"], correctAnswer: 1 },
+  { id: "q-s6-15-3", standardId: "std-s6-15", text: "سرعة الضوء في الفراغ تقريباً؟", options: ["300 م/ث", "3000 م/ث", "300,000 كم/ث", "3,000,000 كم/ث"], correctAnswer: 2 },
+  { id: "q-s6-15-4", standardId: "std-s6-15", text: "لماذا لا ينتقل الصوت في الفراغ؟", options: ["بطيء", "يحتاج وسط مادي", "ضعيف", "موجة ضوئية"], correctAnswer: 1 },
+  { id: "q-s6-15-5", standardId: "std-s6-15", text: "العلاقة بين التردد وطول الموجة؟", options: ["طردية", "عكسية", "لا علاقة", "متساوية"], correctAnswer: 1 },
+
+  // الكهرباء والمغناطيسية
+  { id: "q-s6-16-1", standardId: "std-s6-16", text: "الشحنات المتشابهة؟", options: ["تتجاذب", "تتنافر", "لا تتأثر", "تتحد"], correctAnswer: 1 },
+  { id: "q-s6-16-2", standardId: "std-s6-16", text: "مادة موصلة للكهرباء؟", options: ["الخشب", "البلاستيك", "النحاس", "المطاط"], correctAnswer: 2 },
+  { id: "q-s6-16-3", standardId: "std-s6-16", text: "قطبا المغناطيس؟", options: ["شرقي وغربي", "شمالي وجنوبي", "علوي وسفلي", "أمامي وخلفي"], correctAnswer: 1 },
+  { id: "q-s6-16-4", standardId: "std-s6-16", text: "ما الكهرباء الساكنة؟", options: ["تيار متحرك", "تراكم شحنات على سطح", "مغناطيسية", "حرارة"], correctAnswer: 1 },
+  { id: "q-s6-16-5", standardId: "std-s6-16", text: "قطبان متشابهان لمغناطيسين؟", options: ["ينجذبان", "يتنافران", "لا يتأثران", "يندمجان"], correctAnswer: 1 },
+
+  // النظام الشمسي
+  { id: "q-s6-17-1", standardId: "std-s6-17", text: "مركز النظام الشمسي؟", options: ["الأرض", "القمر", "الشمس", "المريخ"], correctAnswer: 2 },
+  { id: "q-s6-17-2", standardId: "std-s6-17", text: "عدد كواكب المجموعة الشمسية؟", options: ["7", "8", "9", "10"], correctAnswer: 1 },
+  { id: "q-s6-17-3", standardId: "std-s6-17", text: "القوة التي تبقي الكواكب في مداراتها؟", options: ["المغناطيسية", "الكهربائية", "الجاذبية", "الاحتكاك"], correctAnswer: 2 },
+  { id: "q-s6-17-4", standardId: "std-s6-17", text: "أكبر كوكب؟", options: ["الأرض", "زحل", "المشتري", "نبتون"], correctAnswer: 2 },
+  { id: "q-s6-17-5", standardId: "std-s6-17", text: "سبب تعاقب الليل والنهار؟", options: ["دوران الأرض حول الشمس", "دوران الأرض حول محورها", "دوران القمر", "ميل المحور"], correctAnswer: 1 },
+
+  // أغلفة الأرض
+  { id: "q-s6-18-1", standardId: "std-s6-18", text: "ما الغلاف الصخري؟", options: ["الهواء", "الماء", "القشرة والوشاح العلوي", "النواة"], correctAnswer: 2 },
+  { id: "q-s6-18-2", standardId: "std-s6-18", text: "ما الغلاف المائي؟", options: ["جميع المياه على الأرض", "الهواء", "التربة", "الصخور"], correctAnswer: 0 },
+  { id: "q-s6-18-3", standardId: "std-s6-18", text: "سبب الزلازل؟", options: ["الرياح", "حركة الصفائح", "المطر", "الحرارة"], correctAnswer: 1 },
+  { id: "q-s6-18-4", standardId: "std-s6-18", text: "طبقة الغلاف الجوي الأقرب للأرض؟", options: ["الستراتوسفير", "التروبوسفير", "الميزوسفير", "الثيرموسفير"], correctAnswer: 1 },
+  { id: "q-s6-18-5", standardId: "std-s6-18", text: "أهمية طبقة الأوزون؟", options: ["إنتاج الأكسجين", "حماية من الأشعة فوق البنفسجية", "إنتاج المطر", "تسخين الأرض"], correctAnswer: 1 },
 ];
 
 // دالة للحصول على أسئلة معيار معين
