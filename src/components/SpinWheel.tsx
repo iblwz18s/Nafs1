@@ -38,15 +38,12 @@ const SpinWheel = ({ students, onSelect, isSpinning, setIsSpinning }: SpinWheelP
     
     // Calculate which student is selected after spin
     setTimeout(() => {
-      // السهم في الأعلى (270 درجة من نقطة البداية أو -90)
-      // نحسب الزاوية التي توقفت عندها العجلة ونحدد القطاع
-      const finalRotation = newRotation % 360;
-      // الزاوية التي يشير إليها السهم (في الأعلى = 270 درجة)
-      const pointerAngle = 270;
-      // الزاوية الفعلية التي يشير إليها السهم على العجلة
-      const effectiveAngle = (pointerAngle - finalRotation % 360 + 360) % 360;
-      // حساب الفهرس بناءً على الزاوية
-      const selectedIndex = Math.floor(effectiveAngle / segmentAngle) % students.length;
+      // تطبيع زاوية الدوران للحصول على زاوية بين 0-360
+      const normalizedRotation = ((newRotation % 360) + 360) % 360;
+      // حساب الفهرس: عند دوران العجلة بمقدار R درجة، القطاع الذي يكون تحت السهم
+      // هو القطاع الذي كان في الموضع (n - R/segmentAngle)
+      const segmentIndex = Math.floor(normalizedRotation / segmentAngle);
+      const selectedIndex = ((students.length - segmentIndex) % students.length + students.length) % students.length;
       onSelect(students[selectedIndex]);
     }, 4000);
   };
