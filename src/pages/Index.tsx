@@ -25,7 +25,7 @@ const Index = () => {
   const currentSubject = selectedSubject ? getSubjectById(selectedSubject) : null;
 
   // Check if this grade+subject has teacher/student selection
-  const hasClassData = selectedGrade === "grade3" && selectedSubject === "grade3-math";
+  const hasClassData = selectedGrade === "grade-3" && selectedSubject === "math-3";
   const teacher = hasClassData ? teacherData["grade3-math"] : null;
   const students = hasClassData ? studentsData["grade3-math"] : null;
 
