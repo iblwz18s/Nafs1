@@ -239,14 +239,24 @@ const Quiz = () => {
 
   // تحديد القطعة النصية للسؤال الحالي
   const getCurrentPassage = () => {
-    if (!currentQuestion || !standardId?.startsWith('std-r3')) return null;
-    const questionId = currentQuestion.id;
-    if (questionId.includes('r3-1-') || questionId.includes('r3-2-') || questionId.includes('r3-3-')) {
-      const qNum = parseInt(questionId.split('-').pop() || '0');
-      if (qNum >= 1 && qNum <= 10) return passages.satellites;
-      if (qNum >= 11 && qNum <= 20) return passages.altruism;
-      if (qNum >= 21 && qNum <= 30) return passages.blueWhale;
+    if (!currentQuestion) return null;
+    
+    // التحقق من وجود passage في السؤال واستخدامه مباشرة
+    if (currentQuestion.passage && passages[currentQuestion.passage]) {
+      return passages[currentQuestion.passage];
     }
+    
+    // للصف الثالث - الأسئلة القديمة التي لا تحتوي على passage
+    if (standardId?.startsWith('std-r3')) {
+      const questionId = currentQuestion.id;
+      if (questionId.includes('r3-1-') || questionId.includes('r3-2-') || questionId.includes('r3-3-')) {
+        const qNum = parseInt(questionId.split('-').pop() || '0');
+        if (qNum >= 1 && qNum <= 10) return passages.satellites;
+        if (qNum >= 11 && qNum <= 20) return passages.altruism;
+        if (qNum >= 21 && qNum <= 30) return passages.blueWhale;
+      }
+    }
+    
     return null;
   };
 
