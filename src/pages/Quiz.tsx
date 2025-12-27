@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getStandardById } from "@/data/standards";
-import { getQuestionsByStandard, Question } from "@/data/questions";
-import { ArrowRight, CheckCircle2, XCircle, Check, X, Lightbulb, Printer, FileText } from "lucide-react";
+import { getQuestionsByStandard, Question, passages } from "@/data/questions";
+import { ArrowRight, CheckCircle2, XCircle, Check, X, Lightbulb, Printer, FileText, SkipForward, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 
 // دالة لتوليد شرح تفصيلي للإجابة
 const generateDetailedExplanation = (question: Question, userAnswer: number): string => {
@@ -222,10 +222,11 @@ const Quiz = () => {
   const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<number[]>([]);
+  const [answers, setAnswers] = useState<(number | null)[]>([]);
   const [showResult, setShowResult] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
+  const [showPassage, setShowPassage] = useState(true);
   const reportRef = useRef<HTMLDivElement>(null);
 
   // الحصول على اسم الطالب من sessionStorage
@@ -236,6 +237,21 @@ const Quiz = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
+  // تحديد القطعة النصية للسؤال الحالي
+  const getCurrentPassage = () => {
+    if (!currentQuestion || !standardId?.startsWith('std-r3')) return null;
+    const questionId = currentQuestion.id;
+    if (questionId.includes('r3-1-') || questionId.includes('r3-2-') || questionId.includes('r3-3-')) {
+      const qNum = parseInt(questionId.split('-').pop() || '0');
+      if (qNum >= 1 && qNum <= 10) return passages.satellites;
+      if (qNum >= 11 && qNum <= 20) return passages.altruism;
+      if (qNum >= 21 && qNum <= 30) return passages.blueWhale;
+    }
+    return null;
+  };
+
+  const currentPassage = getCurrentPassage();
+
   const handleSelectAnswer = (index: number) => {
     if (isAnswerSubmitted) return;
     setSelectedAnswer(index);
@@ -245,6 +261,20 @@ const Quiz = () => {
     if (selectedAnswer === null) return;
     setIsAnswerSubmitted(true);
     setShowFeedback(true);
+  };
+
+  const handleSkipQuestion = () => {
+    const newAnswers = [...answers, null]; // null يعني تم تخطي السؤال
+    setAnswers(newAnswers);
+    
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer(null);
+      setShowFeedback(false);
+      setIsAnswerSubmitted(false);
+    } else {
+      setShowResult(true);
+    }
   };
 
   const handleNext = () => {
@@ -264,7 +294,7 @@ const Quiz = () => {
   const calculateScore = () => {
     let correct = 0;
     answers.forEach((answer, index) => {
-      if (answer === questions[index]?.correctAnswer) {
+      if (answer !== null && answer === questions[index]?.correctAnswer) {
         correct++;
       }
     });
@@ -274,8 +304,8 @@ const Quiz = () => {
   const getQuestionResults = (): QuestionResult[] => {
     return questions.map((question, index) => ({
       question,
-      userAnswer: answers[index],
-      isCorrect: answers[index] === question.correctAnswer
+      userAnswer: answers[index] ?? -1, // -1 يعني تم تخطي السؤال
+      isCorrect: answers[index] !== null && answers[index] === question.correctAnswer
     }));
   };
 
@@ -567,6 +597,27 @@ const Quiz = () => {
 
           <Card className="shadow-soft animate-fade-in">
             <CardContent className="p-6">
+              {/* عرض القطعة النصية */}
+              {currentPassage && (
+                <div className="mb-6 p-4 bg-muted/50 rounded-lg border border-border">
+                  <button
+                    onClick={() => setShowPassage(!showPassage)}
+                    className="w-full flex items-center justify-between text-right mb-2"
+                  >
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-5 h-5 text-primary" />
+                      <span className="font-bold text-foreground">القطعة النصية: {currentPassage.title}</span>
+                    </div>
+                    {showPassage ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                  </button>
+                  {showPassage && (
+                    <div className="text-sm text-foreground leading-relaxed whitespace-pre-line max-h-64 overflow-y-auto pr-2">
+                      {currentPassage.text}
+                    </div>
+                  )}
+                </div>
+              )}
+
               <h3 className="text-xl font-bold text-foreground mb-6">{currentQuestion.text}</h3>
               
               {/* عرض صورة السؤال إن وجدت */}
@@ -645,13 +696,23 @@ const Quiz = () => {
               )}
 
               {!showFeedback ? (
-                <Button
-                  onClick={handleSubmitAnswer}
-                  disabled={selectedAnswer === null}
-                  className="w-full mt-6 btn-primary-gradient disabled:opacity-50"
-                >
-                  تأكيد الإجابة
-                </Button>
+                <div className="flex gap-3 mt-6">
+                  <Button
+                    onClick={handleSubmitAnswer}
+                    disabled={selectedAnswer === null}
+                    className="flex-1 btn-primary-gradient disabled:opacity-50"
+                  >
+                    تأكيد الإجابة
+                  </Button>
+                  <Button
+                    onClick={handleSkipQuestion}
+                    variant="outline"
+                    className="gap-2"
+                  >
+                    <SkipForward className="w-4 h-4" />
+                    تخطي
+                  </Button>
+                </div>
               ) : (
                 <Button
                   onClick={handleNext}
