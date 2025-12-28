@@ -7559,6 +7559,81 @@ export const getQuestionsByStandard = (standardId: string): Question[] => {
   return questions.filter((q) => q.standardId === standardId);
 };
 
+// دالة للحصول على الأسئلة حسب المؤشر الفرعي
+export const getQuestionsBySubIndicator = (standardId: string, subIndicatorId: string): Question[] => {
+  const standardQuestions = getQuestionsByStandard(standardId);
+  
+  // تصنيف الأسئلة حسب المؤشر الفرعي بناءً على محتواها
+  // المعيار std-r6-1: اكتساب المفردات
+  if (standardId === "std-r6-1") {
+    const subIndicatorCode = subIndicatorId.split('-').pop();
+    return standardQuestions.filter(q => {
+      const text = q.text.toLowerCase();
+      switch (subIndicatorCode) {
+        case "1": // يستنتج مرادفات المفردات، ويوضح معاني مفردات تغيرت دلالاتها
+          return text.includes("مرادف") || text.includes("معنى") || text.includes("المقصود");
+        case "2": // يميز المفردات المتشابهة في المعنى
+          return text.includes("العلاقة بين") && (text.includes("ترادف") || q.options.includes("ترادف"));
+        case "3": // يصنف المترادفات والأضداد
+          return text.includes("ضد") || text.includes("أضداد") || text.includes("تضاد");
+        case "4": // يستخدم المفردات في جمل مفيدة
+          return text.includes("جملة") || text.includes("جمل");
+        default:
+          return true;
+      }
+    });
+  }
+  
+  // المعيار std-r6-2: الفهم القرائي والأفكار الرئيسة
+  if (standardId === "std-r6-2") {
+    const subIndicatorCode = subIndicatorId.split('-').pop();
+    return standardQuestions.filter(q => {
+      const text = q.text.toLowerCase();
+      switch (subIndicatorCode) {
+        case "1": // يجيب عن أسئلة حول المعلومات المباشرة، ويميز نوع النص
+          return text.includes("نوع النص") || text.includes("عدد") || text.includes("كم");
+        case "2": // يحدد المعلومات ويقارن بين مفهومين
+          return text.includes("اختلاف") || text.includes("مقارنة") || text.includes("أوجه");
+        case "3": // يميز الأفكار الرئيسة والفرعية
+          return text.includes("فكرة") || text.includes("الفكرة الرئيسة");
+        case "4": // يصف الشخصيات والأحداث ويرتب الأحداث
+          return text.includes("ترتيب") || text.includes("تسلسل") || text.includes("علاقة");
+        case "5": // يستدل من النص على تفسير الظواهر
+          return text.includes("سبب") || text.includes("لماذا") || text.includes("يستدل");
+        default:
+          return true;
+      }
+    });
+  }
+  
+  // المعيار std-r6-3: التمييز والنقد وإبداء الرأي
+  if (standardId === "std-r6-3") {
+    const subIndicatorCode = subIndicatorId.split('-').pop();
+    return standardQuestions.filter(q => {
+      const text = q.text.toLowerCase();
+      switch (subIndicatorCode) {
+        case "1": // يميّز بين عبارات النص ويحدد العبارات الجمالية
+          return text.includes("تعبير") || text.includes("جمالي") || text.includes("دلالة");
+        case "2": // يعين رأياً معطى ويبدي رأيه في وجهة نظر الكاتب
+          return text.includes("رأي") || text.includes("وجهة نظر") || text.includes("موقف");
+        case "3": // يبدي رأيه حول القيم والاتجاهات
+          return text.includes("قيمة") || text.includes("اتجاه") || text.includes("درس");
+        case "4": // يقترح عنواناً أو بداية أو خاتمة مغايرة
+          return text.includes("عنوان") || text.includes("بداية") || text.includes("خاتمة") || text.includes("منظم");
+        case "5": // يستخدم وسائل الإقناع والتعليل
+          return text.includes("دليل") || text.includes("برهان") || text.includes("حجة") || text.includes("لأن");
+        case "6": // يوظف مغزى النص في اقتراح حلول
+          return text.includes("حل") || text.includes("اقتراح") || text.includes("يمكن");
+        default:
+          return true;
+      }
+    });
+  }
+  
+  // للمعايير الأخرى، إرجاع كل الأسئلة
+  return standardQuestions;
+};
+
 // دالة للحصول على اختبار كامل بعدد محدد من الأسئلة
 export const generateQuiz = (
   standardId: string,

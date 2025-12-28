@@ -809,3 +809,16 @@ export const getSubjectById = (subjectId: string): Subject | undefined => {
 export const getStandardById = (standardId: string): Standard | undefined => {
   return standards.find((standard) => standard.id === standardId);
 };
+
+// دالة للحصول على المؤشر الفرعي بالمعرف
+export const getSubIndicatorById = (subIndicatorId: string): { standard: Standard; subIndicator: SubIndicator } | undefined => {
+  for (const standard of standards) {
+    if (standard.subIndicators) {
+      const subIndicator = standard.subIndicators.find(si => si.id === subIndicatorId);
+      if (subIndicator) {
+        return { standard, subIndicator };
+      }
+    }
+  }
+  return undefined;
+};

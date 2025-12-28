@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import GradeCard from "@/components/GradeCard";
 import SubjectCard from "@/components/SubjectCard";
 import StandardCard from "@/components/StandardCard";
+import Grade6StandardsView from "@/components/Grade6StandardsView";
 import TeacherSelector from "@/components/TeacherSelector";
 import StudentSelector from "@/components/StudentSelector";
 import { Button } from "@/components/ui/button";
@@ -43,9 +44,16 @@ const Index = () => {
     }
   };
 
-  const handleStartQuiz = (standardId: string) => {
-    navigate(`/quiz/${standardId}`);
+  const handleStartQuiz = (standardId: string, subIndicatorId?: string) => {
+    if (subIndicatorId) {
+      navigate(`/quiz/${standardId}?subIndicator=${subIndicatorId}`);
+    } else {
+      navigate(`/quiz/${standardId}`);
+    }
   };
+
+  // التحقق مما إذا كان الموضوع يحتاج عرض خاص (لغتي الصف السادس)
+  const isGrade6Arabic = selectedSubject === "reading-6";
 
   return (
     <div 
@@ -145,16 +153,27 @@ const Index = () => {
               <h2 className="text-3xl font-bold text-foreground mb-3">معايير {currentSubject?.name}</h2>
               <p className="text-muted-foreground">اختر المعيار لبدء الاختبار</p>
             </div>
-            <div className="grid gap-4 max-w-3xl mx-auto">
-              {standards.map((standard, index) => (
-                <StandardCard
-                  key={standard.id}
-                  standard={standard}
-                  index={index}
-                  onClick={() => handleStartQuiz(standard.id)}
+            
+            {/* عرض خاص لمعايير لغتي الصف السادس مع المؤشرات الفرعية */}
+            {isGrade6Arabic ? (
+              <div className="max-w-3xl mx-auto">
+                <Grade6StandardsView 
+                  standards={standards} 
+                  onStartQuiz={handleStartQuiz}
                 />
-              ))}
-            </div>
+              </div>
+            ) : (
+              <div className="grid gap-4 max-w-3xl mx-auto">
+                {standards.map((standard, index) => (
+                  <StandardCard
+                    key={standard.id}
+                    standard={standard}
+                    index={index}
+                    onClick={() => handleStartQuiz(standard.id)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </main>
