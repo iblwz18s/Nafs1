@@ -1,11 +1,11 @@
-import { useState, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useRef, useMemo } from "react";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { getStandardById } from "@/data/standards";
-import { getQuestionsByStandard, Question, passages } from "@/data/questions";
+import { getStandardById, getSubIndicatorById } from "@/data/standards";
+import { getQuestionsByStandard, getQuestionsBySubIndicator, Question, passages } from "@/data/questions";
 import { ArrowRight, CheckCircle2, XCircle, Check, X, Lightbulb, Printer, FileText, SkipForward, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
 
 // دالة لتوليد شرح تفصيلي للإجابة
@@ -219,6 +219,8 @@ interface QuestionResult {
 
 const Quiz = () => {
   const { standardId } = useParams<{ standardId: string }>();
+  const [searchParams] = useSearchParams();
+  const subIndicatorId = searchParams.get('subIndicator');
   const navigate = useNavigate();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -233,9 +235,19 @@ const Quiz = () => {
   const studentName = sessionStorage.getItem('selectedStudent') || '';
 
   const standard = standardId ? getStandardById(standardId) : null;
-  const questions = standardId ? getQuestionsByStandard(standardId) : [];
+  const subIndicatorInfo = subIndicatorId ? getSubIndicatorById(subIndicatorId) : null;
+  
+  // الحصول على الأسئلة حسب المؤشر الفرعي إذا كان موجوداً
+  const questions = useMemo(() => {
+    if (!standardId) return [];
+    if (subIndicatorId) {
+      return getQuestionsBySubIndicator(standardId, subIndicatorId);
+    }
+    return getQuestionsByStandard(standardId);
+  }, [standardId, subIndicatorId]);
+  
   const currentQuestion = questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
 
   // تحديد القطعة النصية للسؤال الحالي
   const getCurrentPassage = () => {
@@ -386,7 +398,9 @@ const Quiz = () => {
                   </div>
                   <div className="flex-1 text-center md:text-right">
                     <h2 className="text-3xl print:text-lg font-bold text-foreground mb-2">تقرير نتيجة الاختبار</h2>
-                    <p className="text-lg print:text-sm text-muted-foreground mb-4 print:mb-2">{standard.name}</p>
+                    <p className="text-lg print:text-sm text-muted-foreground mb-4 print:mb-2">
+                      {subIndicatorInfo ? subIndicatorInfo.subIndicator.name : standard.name}
+                    </p>
                     
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 print:gap-2 mt-6 print:mt-2">
                       <div className="bg-muted/50 rounded-lg p-4 print:p-2">
@@ -597,7 +611,13 @@ const Quiz = () => {
 
         <div className="max-w-2xl mx-auto">
           <div className="mb-6">
-            <p className="text-sm text-muted-foreground mb-2">{standard.name}</p>
+            <p className="text-sm text-muted-foreground mb-2">
+              {subIndicatorInfo ? (
+                <span>
+                  {standard.name} - <span className="text-primary font-medium">{subIndicatorInfo.subIndicator.name}</span>
+                </span>
+              ) : standard.name}
+            </p>
             <div className="flex items-center justify-between mb-2">
               <span className="text-foreground font-medium">السؤال {currentQuestionIndex + 1} من {questions.length}</span>
               <span className="text-muted-foreground">{Math.round(progress)}%</span>
