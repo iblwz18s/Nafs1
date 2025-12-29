@@ -1,6 +1,7 @@
 import { Grade } from "@/data/standards";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import threeIcon from "@/assets/three-icon.png";
+import sixIcon from "@/assets/six-icon.png";
 
 interface GradeCardProps {
   grade: Grade;
@@ -8,8 +9,9 @@ interface GradeCardProps {
 }
 
 const GradeCard = ({ grade, onClick }: GradeCardProps) => {
-  // استخدام أيقونة مخصصة للصف الثالث
+  // استخدام أيقونات مخصصة لكل صف
   const isGrade3 = grade.id === "grade-3";
+  const isGrade6 = grade.id === "grade-6";
 
   return (
     <ShinyButton 
@@ -19,11 +21,9 @@ const GradeCard = ({ grade, onClick }: GradeCardProps) => {
       <div className="flex flex-col items-center">
         {isGrade3 ? (
           <img src={threeIcon} alt="الصف الثالث" className="w-20 h-20 mb-4 rounded-xl" />
-        ) : (
-          <div className="w-20 h-20 mb-4 rounded-xl bg-primary flex items-center justify-center">
-            <span className="text-4xl font-bold text-primary-foreground">٦</span>
-          </div>
-        )}
+        ) : isGrade6 ? (
+          <img src={sixIcon} alt="الصف السادس" className="w-20 h-20 mb-4 rounded-xl" />
+        ) : null}
         <h3 className="text-xl font-bold text-foreground">{grade.name}</h3>
         <p className="text-muted-foreground mt-2">اختر للبدء</p>
       </div>
