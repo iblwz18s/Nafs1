@@ -14,7 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
+        sans: ['IBM Plex Sans Arabic', 'sans-serif'],
+        heading: ['IBM Plex Sans Arabic', 'sans-serif'],
         tajawal: ['Tajawal', 'sans-serif'],
+        helvetica: ['Helvetica Neue Arabic', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
