@@ -71,8 +71,10 @@ const Index = () => {
     }
   };
 
-  // التحقق مما إذا كان الموضوع يحتاج عرض خاص (لغتي الصف السادس)
+  // التحقق مما إذا كان الموضوع يحتاج عرض خاص (لغتي أو الرياضيات للصف السادس)
   const isGrade6Arabic = selectedSubject === "reading-6";
+  const isGrade6Math = selectedSubject === "math-6";
+  const showCollapsibleView = isGrade6Arabic || isGrade6Math;
 
   return (
     <div 
@@ -226,8 +228,8 @@ const Index = () => {
               <p className="text-muted-foreground">اختر المعيار لبدء الاختبار</p>
             </div>
             
-            {/* عرض خاص لمعايير لغتي الصف السادس مع المؤشرات الفرعية */}
-            {isGrade6Arabic ? (
+            {/* عرض خاص لمعايير لغتي والرياضيات للصف السادس مع المؤشرات الفرعية */}
+            {showCollapsibleView ? (
               <div className="max-w-3xl mx-auto">
                 <Grade6StandardsView 
                   standards={standards} 
