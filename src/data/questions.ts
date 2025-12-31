@@ -7630,6 +7630,41 @@ export const getQuestionsBySubIndicator = (standardId: string, subIndicatorId: s
     });
   }
   
+  // معايير العلوم - الصف السادس
+  // std-s6-1: تراكيب الخلية
+  if (standardId === "std-s6-1") {
+    const subIndicatorCode = subIndicatorId.split('-').pop();
+    return standardQuestions.filter(q => {
+      const text = q.text;
+      switch (subIndicatorCode) {
+        case "1": // مفهوم الخلية والتمييز بين وحيدة وعديدة الخلايا
+          return text.includes("خلية واحدة") || text.includes("وحيدة") || text.includes("عديدة") || text.includes("البكتيريا");
+        case "2": // تحديد تراكيب الخلية وتسميتها
+          return text.includes("النواة") || text.includes("الغشاء") || text.includes("السيتوبلازم") || text.includes("الجدار الخلوي") || text.includes("العضي");
+        case "3": // ربط التراكيب بوظائفها
+          return text.includes("وظيفة") || text.includes("الميتوكوندريا") || text.includes("الريبوسومات") || text.includes("البلاستيدات");
+        default:
+          return true;
+      }
+    });
+  }
+  
+  // std-s6-7: مكونات النظام البيئي
+  if (standardId === "std-s6-7") {
+    const subIndicatorCode = subIndicatorId.split('-').pop();
+    return standardQuestions.filter(q => {
+      const text = q.text;
+      switch (subIndicatorCode) {
+        case "1": // المكونات الحيوية وغير الحيوية
+          return text.includes("حيوي") || text.includes("غير حيوي") || text.includes("المكونات") || text.includes("السلسلة الغذائية") || text.includes("منتج") || text.includes("مستهلك") || text.includes("محلل");
+        case "2": // أسباب التغيرات في المواطن البيئية
+          return text.includes("تغير") || text.includes("اختفت") || text.includes("الطاقة") || text.includes("تكافل") || text.includes("علاقة");
+        default:
+          return true;
+      }
+    });
+  }
+  
   // للمعايير الأخرى، إرجاع كل الأسئلة
   return standardQuestions;
 };
