@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
 
 @font-face {
   font-family: 'Helvetica Neue Arabic';
@@ -134,13 +134,42 @@
   }
 
   html {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
     direction: rtl;
+    font-feature-settings: "ss01" on; /* Enable Arabic numerals */
   }
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+
+  /* العناوين - وزن أثقل */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  /* النصوص العادية */
+  p, span, div {
+    font-weight: 400;
+  }
+
+  /* الأرقام العربية */
+  .arabic-nums {
+    font-feature-settings: "ss01" on;
   }
 }
 
