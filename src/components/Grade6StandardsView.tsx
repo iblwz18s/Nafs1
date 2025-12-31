@@ -24,9 +24,9 @@ const Grade6StandardsView = ({ standards, onStartQuiz }: Grade6StandardsViewProp
     }));
   };
 
-  // فلترة معايير الصف السادس التي تحتوي على مؤشرات فرعية (لغتي أو الرياضيات)
+  // فلترة معايير الصف السادس التي تحتوي على مؤشرات فرعية (لغتي أو الرياضيات أو العلوم)
   const grade6Standards = standards.filter(
-    s => (s.id.startsWith('std-r6-') || s.id.startsWith('std-m6-')) && s.subIndicators && s.subIndicators.length > 0
+    s => (s.id.startsWith('std-r6-') || s.id.startsWith('std-m6-') || s.id.startsWith('std-s6-')) && s.subIndicators && s.subIndicators.length > 0
   );
 
   if (grade6Standards.length === 0) {
