@@ -7,11 +7,13 @@ import StandardCard from "@/components/StandardCard";
 import Grade6StandardsView from "@/components/Grade6StandardsView";
 import TeacherSelector from "@/components/TeacherSelector";
 import StudentSelector from "@/components/StudentSelector";
+import ParentLogin from "@/components/ParentLogin";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { grades, getSubjectsByGrade, getStandardsBySubject, getGradeById, getSubjectById } from "@/data/standards";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, GraduationCap, Users } from "lucide-react";
 import logo from "@/assets/logo.png";
-import { teacherData, studentsData } from "@/data/classData";
+import { teacherData, studentsData, grade3Students, grade6Students } from "@/data/classData";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Index = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedTeacher, setSelectedTeacher] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
+  const [userType, setUserType] = useState<"student" | "parent" | null>(null);
 
   const subjects = selectedGrade ? getSubjectsByGrade(selectedGrade) : [];
   const standards = selectedSubject ? getStandardsBySubject(selectedSubject) : [];
@@ -30,8 +33,19 @@ const Index = () => {
   const teacher = hasClassData && selectedSubject ? teacherData[selectedSubject] : null;
   const classStudents = hasClassData && selectedSubject ? studentsData[selectedSubject] : null;
 
+  // Get students list for parent login based on grade
+  const getStudentsByGrade = (gradeId: string) => {
+    if (gradeId === "grade-3") return grade3Students;
+    if (gradeId === "grade-6") return grade6Students;
+    return [];
+  };
+
   const handleBack = () => {
-    if (hasClassData && selectedStudent) {
+    if (userType === "parent" && selectedStudent) {
+      setSelectedStudent(null);
+    } else if (userType === "parent") {
+      setUserType(null);
+    } else if (hasClassData && selectedStudent) {
       setSelectedStudent(null);
     } else if (hasClassData && selectedTeacher) {
       setSelectedTeacher(false);
@@ -39,8 +53,11 @@ const Index = () => {
       setSelectedSubject(null);
       setSelectedTeacher(false);
       setSelectedStudent(null);
+    } else if (userType) {
+      setUserType(null);
     } else if (selectedGrade) {
       setSelectedGrade(null);
+      setUserType(null);
     }
   };
 
@@ -104,8 +121,69 @@ const Index = () => {
           </div>
         )}
 
-        {/* اختيار المادة */}
-        {selectedGrade && !selectedSubject && (
+        {/* اختيار نوع المستخدم (طالب أو ولي أمر) */}
+        {selectedGrade && !userType && (
+          <div className="animate-fade-in">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold text-foreground mb-3">نوع الدخول</h2>
+              <p className="text-muted-foreground">{currentGrade?.name}</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+              <Card 
+                className="cursor-pointer card-hover border-2 border-border hover:border-primary bg-card"
+                onClick={() => setUserType("student")}
+              >
+                <CardContent className="p-8 text-center">
+                  <div className="bg-primary/10 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <GraduationCap className="w-10 h-10 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">طالب</h3>
+                  <p className="text-muted-foreground text-sm">الدخول كطالب لأداء الاختبارات</p>
+                </CardContent>
+              </Card>
+
+              <Card 
+                className="cursor-pointer card-hover border-2 border-border hover:border-secondary bg-card"
+                onClick={() => setUserType("parent")}
+              >
+                <CardContent className="p-8 text-center">
+                  <div className="bg-secondary/10 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <Users className="w-10 h-10 text-secondary" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-2">ولي أمر</h3>
+                  <p className="text-muted-foreground text-sm">متابعة أداء الطالب</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* دخول ولي الأمر */}
+        {selectedGrade && userType === "parent" && !selectedStudent && (
+          <ParentLogin
+            students={getStudentsByGrade(selectedGrade)}
+            gradeName={currentGrade?.name || ""}
+            onBack={() => setUserType(null)}
+            onSuccess={(student) => setSelectedStudent(student)}
+          />
+        )}
+
+        {/* عرض رسالة لولي الأمر بعد تسجيل الدخول */}
+        {selectedGrade && userType === "parent" && selectedStudent && (
+          <div className="animate-fade-in">
+            <div className="text-center mb-10">
+              <div className="bg-primary/10 rounded-lg p-6 inline-block mb-6">
+                <p className="text-muted-foreground text-sm mb-1">مرحباً ولي أمر الطالب</p>
+                <p className="text-primary font-bold text-xl">{selectedStudent}</p>
+              </div>
+              <h2 className="text-2xl font-bold text-foreground mb-3">متابعة أداء الطالب</h2>
+              <p className="text-muted-foreground">هذه الميزة قيد التطوير</p>
+            </div>
+          </div>
+        )}
+
+        {/* اختيار المادة - للطالب فقط */}
+        {selectedGrade && userType === "student" && !selectedSubject && (
           <div className="animate-fade-in">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-foreground mb-3">اختر المادة</h2>

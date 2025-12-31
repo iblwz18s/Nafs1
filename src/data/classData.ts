@@ -21,7 +21,7 @@ export const teacherData: Record<string, { name: string; subject: string }> = {
   }
 };
 
-const grade3Students = [
+export const grade3Students = [
   "باسل عبدالعزيز محمد المصلوخي",
   "تركي مبارك صخيل السويلمي",
   "تميم عيسى محيلان العنزي",
@@ -37,7 +37,7 @@ const grade3Students = [
   "مهند نادر عايد العنزي"
 ];
 
-const grade6Students = [
+export const grade6Students = [
   "ابراهيم عارف سمير العنزي",
   "تركي احمد دلي العنزي",
   "حسام سيار خزيم العنزي",
