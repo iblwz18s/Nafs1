@@ -71,10 +71,11 @@ const Index = () => {
     }
   };
 
-  // التحقق مما إذا كان الموضوع يحتاج عرض خاص (لغتي أو الرياضيات للصف السادس)
+  // التحقق مما إذا كان الموضوع يحتاج عرض خاص (لغتي أو الرياضيات أو العلوم للصف السادس)
   const isGrade6Arabic = selectedSubject === "reading-6";
   const isGrade6Math = selectedSubject === "math-6";
-  const showCollapsibleView = isGrade6Arabic || isGrade6Math;
+  const isGrade6Science = selectedSubject === "science-6";
+  const showCollapsibleView = isGrade6Arabic || isGrade6Math || isGrade6Science;
 
   return (
     <div 
