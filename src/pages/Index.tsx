@@ -11,8 +11,9 @@ import ParentLogin from "@/components/ParentLogin";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { grades, getSubjectsByGrade, getStandardsBySubject, getGradeById, getSubjectById } from "@/data/standards";
-import { ArrowRight, GraduationCap, Users } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 import logo from "@/assets/logo.png";
+import trainingIcon from "@/assets/training-icon.png";
 import { teacherData, studentsData, grade3Students, grade6Students } from "@/data/classData";
 
 const Index = () => {
@@ -134,8 +135,8 @@ const Index = () => {
                 onClick={() => setUserType("teacher")}
               >
                 <CardContent className="p-8 text-center">
-                  <div className="bg-primary/10 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                    <GraduationCap className="w-10 h-10 text-primary" />
+                  <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <img src={trainingIcon} alt="معلم" className="w-16 h-16 object-contain" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-2">معلم</h3>
                   <p className="text-muted-foreground text-sm">التدريب على الاختبارات</p>
