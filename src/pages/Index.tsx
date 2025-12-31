@@ -168,24 +168,16 @@ const Index = () => {
           />
         )}
 
-        {/* عرض رسالة لولي الأمر بعد تسجيل الدخول */}
-        {selectedGrade && userType === "parent" && selectedStudent && (
+        {/* اختيار المادة - للمعلم أو ولي الأمر بعد اختيار الطالب */}
+        {selectedGrade && ((userType === "teacher") || (userType === "parent" && selectedStudent)) && !selectedSubject && (
           <div className="animate-fade-in">
             <div className="text-center mb-10">
-              <div className="bg-primary/10 rounded-lg p-6 inline-block mb-6">
-                <p className="text-muted-foreground text-sm mb-1">مرحباً ولي أمر الطالب</p>
-                <p className="text-primary font-bold text-xl">{selectedStudent}</p>
-              </div>
-              <h2 className="text-2xl font-bold text-foreground mb-3">متابعة أداء الطالب</h2>
-              <p className="text-muted-foreground">هذه الميزة قيد التطوير</p>
-            </div>
-          </div>
-        )}
-
-        {/* اختيار المادة - للمعلم فقط */}
-        {selectedGrade && userType === "teacher" && !selectedSubject && (
-          <div className="animate-fade-in">
-            <div className="text-center mb-10">
+              {userType === "parent" && selectedStudent && (
+                <div className="mb-4 bg-primary/10 rounded-lg p-3 inline-block">
+                  <p className="text-muted-foreground text-sm">الطالب:</p>
+                  <p className="text-primary font-bold">{selectedStudent}</p>
+                </div>
+              )}
               <h2 className="text-3xl font-bold text-foreground mb-3">اختر المادة</h2>
               <p className="text-muted-foreground">{currentGrade?.name}</p>
             </div>
