@@ -38,12 +38,17 @@ const SpinWheel = ({ students, onSelect, isSpinning, setIsSpinning }: SpinWheelP
     
     // Calculate which student is selected after spin
     setTimeout(() => {
+      // السهم يشير للأعلى (عند زاوية -90 درجة من منظور الدائرة)
+      // القطاع 0 يبدأ عند -90 درجة ويمتد في اتجاه عقارب الساعة
+      // عند دوران العجلة بزاوية R، نحتاج معرفة أي قطاع يكون تحت السهم
+      
       // تطبيع زاوية الدوران للحصول على زاوية بين 0-360
       const normalizedRotation = ((newRotation % 360) + 360) % 360;
-      // حساب الفهرس: عند دوران العجلة بمقدار R درجة، القطاع الذي يكون تحت السهم
-      // هو القطاع الذي كان في الموضع (n - R/segmentAngle)
-      const segmentIndex = Math.floor(normalizedRotation / segmentAngle);
-      const selectedIndex = ((students.length - segmentIndex) % students.length + students.length) % students.length;
+      
+      // عندما تدور العجلة في اتجاه عقارب الساعة، القطاعات تتحرك بعكس الترتيب
+      // نحسب كم قطاع تحركت العجلة من موضعها الأصلي
+      const selectedIndex = Math.floor((360 - normalizedRotation + segmentAngle / 2) / segmentAngle) % students.length;
+      
       onSelect(students[selectedIndex]);
     }, 4000);
   };
