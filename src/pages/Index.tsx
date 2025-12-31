@@ -185,7 +185,7 @@ const Index = () => {
         {/* دخول ولي الأمر */}
         {selectedGrade && userType === "parent" && !selectedStudent && (
           <ParentLogin
-            students={getStudentsByGrade(selectedGrade)}
+            grade={selectedGrade}
             gradeName={currentGrade?.name || ""}
             onBack={() => setUserType(null)}
             onSuccess={(student) => setSelectedStudent(student)}
