@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import GradeCard from "@/components/GradeCard";
 import SubjectCard from "@/components/SubjectCard";
@@ -17,13 +17,24 @@ import trainingIcon from "@/assets/training-icon.png";
 import familyIcon from "@/assets/family-icon.png";
 import { teacherData, studentsData, grade3Students, grade6Students } from "@/data/classData";
 
+type NavigationState = {
+  selectedGrade: string | null;
+  selectedSubject: string | null;
+  selectedTeacher: boolean;
+  selectedStudent: string | null;
+  userType: "teacher" | "parent" | null;
+};
+
 const Index = () => {
   const navigate = useNavigate();
-  const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
-  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
-  const [selectedTeacher, setSelectedTeacher] = useState<boolean>(false);
-  const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
-  const [userType, setUserType] = useState<"teacher" | "parent" | null>(null);
+  const location = useLocation();
+  const restoreState = (location.state ?? null) as Partial<NavigationState> | null;
+
+  const [selectedGrade, setSelectedGrade] = useState<string | null>(restoreState?.selectedGrade ?? null);
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(restoreState?.selectedSubject ?? null);
+  const [selectedTeacher, setSelectedTeacher] = useState<boolean>(restoreState?.selectedTeacher ?? false);
+  const [selectedStudent, setSelectedStudent] = useState<string | null>(restoreState?.selectedStudent ?? null);
+  const [userType, setUserType] = useState<"teacher" | "parent" | null>(restoreState?.userType ?? null);
 
   const subjects = selectedGrade ? getSubjectsByGrade(selectedGrade) : [];
   const standards = selectedSubject ? getStandardsBySubject(selectedSubject) : [];
@@ -64,10 +75,18 @@ const Index = () => {
   };
 
   const handleStartQuiz = (standardId: string, subIndicatorId?: string) => {
+    const navigationState: NavigationState = {
+      selectedGrade,
+      selectedSubject,
+      selectedTeacher,
+      selectedStudent,
+      userType,
+    };
+
     if (subIndicatorId) {
-      navigate(`/quiz/${standardId}?subIndicator=${subIndicatorId}`);
+      navigate(`/quiz/${standardId}?subIndicator=${subIndicatorId}`, { state: navigationState });
     } else {
-      navigate(`/quiz/${standardId}`);
+      navigate(`/quiz/${standardId}`, { state: navigationState });
     }
   };
 
