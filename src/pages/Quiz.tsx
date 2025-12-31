@@ -608,9 +608,20 @@ const Quiz = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <div className="container mx-auto px-4 py-8">
-        <Button variant="ghost" onClick={() => navigate("/")} className="mb-4 text-muted-foreground">
+        <Button 
+          variant="ghost" 
+          onClick={() => {
+            // العودة للمعايير مع الحفاظ على المادة والصف
+            const grade = standardId?.includes('3') ? 'third' : 'sixth';
+            let subject = 'language';
+            if (standardId?.includes('-m')) subject = 'math';
+            if (standardId?.includes('-s')) subject = 'science';
+            navigate(`/?grade=${grade}&subject=${subject}`);
+          }} 
+          className="mb-4 text-muted-foreground"
+        >
           <ArrowRight className="w-4 h-4 ml-1" />
-          العودة
+          العودة للمعايير
         </Button>
 
         <div className="max-w-2xl mx-auto">
