@@ -11,9 +11,10 @@ import ParentLogin from "@/components/ParentLogin";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { grades, getSubjectsByGrade, getStandardsBySubject, getGradeById, getSubjectById } from "@/data/standards";
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
 import trainingIcon from "@/assets/training-icon.png";
+import familyIcon from "@/assets/family-icon.png";
 import { teacherData, studentsData, grade3Students, grade6Students } from "@/data/classData";
 
 const Index = () => {
@@ -148,8 +149,8 @@ const Index = () => {
                 onClick={() => setUserType("parent")}
               >
                 <CardContent className="p-8 text-center">
-                  <div className="bg-secondary/10 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                    <Users className="w-10 h-10 text-secondary" />
+                  <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                    <img src={familyIcon} alt="ولي أمر" className="w-16 h-16 object-contain" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-2">ولي أمر</h3>
                   <p className="text-muted-foreground text-sm">اختبار الطالب وحفظ تقدمه</p>
