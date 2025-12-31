@@ -14,7 +14,74 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      student_progress: {
+        Row: {
+          completed_at: string | null
+          id: string
+          score: number
+          standard_id: string
+          student_id: string
+          sub_indicator_id: string
+          total_questions: number
+        }
+        Insert: {
+          completed_at?: string | null
+          id?: string
+          score: number
+          standard_id: string
+          student_id: string
+          sub_indicator_id: string
+          total_questions: number
+        }
+        Update: {
+          completed_at?: string | null
+          id?: string
+          score?: number
+          standard_id?: string
+          student_id?: string
+          sub_indicator_id?: string
+          total_questions?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_progress_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      students: {
+        Row: {
+          created_at: string | null
+          grade: string
+          id: string
+          parent_name: string
+          phone_number: string
+          pin_code: string
+          student_name: string
+        }
+        Insert: {
+          created_at?: string | null
+          grade: string
+          id?: string
+          parent_name: string
+          phone_number: string
+          pin_code: string
+          student_name: string
+        }
+        Update: {
+          created_at?: string | null
+          grade?: string
+          id?: string
+          parent_name?: string
+          phone_number?: string
+          pin_code?: string
+          student_name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
