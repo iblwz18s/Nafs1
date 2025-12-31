@@ -21,7 +21,7 @@ const Index = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedTeacher, setSelectedTeacher] = useState<boolean>(false);
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
-  const [userType, setUserType] = useState<"student" | "parent" | null>(null);
+  const [userType, setUserType] = useState<"teacher" | "parent" | null>(null);
 
   const subjects = selectedGrade ? getSubjectsByGrade(selectedGrade) : [];
   const standards = selectedSubject ? getStandardsBySubject(selectedSubject) : [];
@@ -131,14 +131,14 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
               <Card 
                 className="cursor-pointer card-hover border-2 border-border hover:border-primary bg-card"
-                onClick={() => setUserType("student")}
+                onClick={() => setUserType("teacher")}
               >
                 <CardContent className="p-8 text-center">
                   <div className="bg-primary/10 rounded-full p-4 w-20 h-20 mx-auto mb-4 flex items-center justify-center">
                     <GraduationCap className="w-10 h-10 text-primary" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-2">طالب</h3>
-                  <p className="text-muted-foreground text-sm">الدخول كطالب لأداء الاختبارات</p>
+                  <h3 className="text-xl font-bold text-foreground mb-2">معلم</h3>
+                  <p className="text-muted-foreground text-sm">التدريب على الاختبارات</p>
                 </CardContent>
               </Card>
 
@@ -151,7 +151,7 @@ const Index = () => {
                     <Users className="w-10 h-10 text-secondary" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-2">ولي أمر</h3>
-                  <p className="text-muted-foreground text-sm">متابعة أداء الطالب</p>
+                  <p className="text-muted-foreground text-sm">اختبار الطالب وحفظ تقدمه</p>
                 </CardContent>
               </Card>
             </div>
@@ -182,8 +182,8 @@ const Index = () => {
           </div>
         )}
 
-        {/* اختيار المادة - للطالب فقط */}
-        {selectedGrade && userType === "student" && !selectedSubject && (
+        {/* اختيار المادة - للمعلم فقط */}
+        {selectedGrade && userType === "teacher" && !selectedSubject && (
           <div className="animate-fade-in">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-foreground mb-3">اختر المادة</h2>
