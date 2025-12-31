@@ -14,7 +14,7 @@ import { grades, getSubjectsByGrade, getStandardsBySubject, getGradeById, getSub
 import { ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
 import trainingIcon from "@/assets/training-icon.png";
-import parentIcon from "@/assets/parent-icon.gif";
+import familyIcon from "@/assets/family-icon.png";
 import { teacherData, studentsData, grade3Students, grade6Students } from "@/data/classData";
 
 const Index = () => {
@@ -150,7 +150,7 @@ const Index = () => {
               >
                 <CardContent className="p-8 text-center">
                   <div className="w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                    <img src={parentIcon} alt="ولي أمر" className="w-16 h-16 object-contain" />
+                    <img src={familyIcon} alt="ولي أمر" className="w-16 h-16 object-contain" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-2">ولي أمر</h3>
                   <p className="text-muted-foreground text-sm">اختبار الطالب وحفظ تقدمه</p>
