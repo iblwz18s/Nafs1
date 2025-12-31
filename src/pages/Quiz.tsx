@@ -1,5 +1,5 @@
 import { useState, useRef, useMemo } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -218,11 +218,21 @@ interface QuestionResult {
   isCorrect: boolean;
 }
 
+type NavigationState = {
+  selectedGrade: string | null;
+  selectedSubject: string | null;
+  selectedTeacher: boolean;
+  selectedStudent: string | null;
+  userType: "teacher" | "parent" | null;
+};
+
 const Quiz = () => {
   const { standardId } = useParams<{ standardId: string }>();
   const [searchParams] = useSearchParams();
   const subIndicatorId = searchParams.get('subIndicator');
   const navigate = useNavigate();
+  const location = useLocation();
+  const returnState = (location.state ?? null) as NavigationState | null;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<(number | null)[]>([]);
@@ -611,12 +621,11 @@ const Quiz = () => {
         <Button 
           variant="ghost" 
           onClick={() => {
-            // العودة للمعايير مع الحفاظ على المادة والصف
-            const grade = standardId?.includes('3') ? 'third' : 'sixth';
-            let subject = 'language';
-            if (standardId?.includes('-m')) subject = 'math';
-            if (standardId?.includes('-s')) subject = 'science';
-            navigate(`/?grade=${grade}&subject=${subject}`);
+            if (returnState) {
+              navigate("/", { state: returnState });
+              return;
+            }
+            navigate("/");
           }} 
           className="mb-4 text-muted-foreground"
         >
