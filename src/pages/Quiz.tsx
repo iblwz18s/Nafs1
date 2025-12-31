@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { getStandardById, getSubIndicatorById } from "@/data/standards";
 import { getQuestionsByStandard, getQuestionsBySubIndicator, Question, passages } from "@/data/questions";
 import { ArrowRight, CheckCircle2, XCircle, Check, X, Lightbulb, Printer, FileText, SkipForward, BookOpen, ChevronDown, ChevronUp } from "lucide-react";
+import SuccessResult from "@/components/ui/success-result";
 
 // دالة لتوليد شرح تفصيلي للإجابة
 const generateDetailedExplanation = (question: Question, userAnswer: number): string => {
@@ -374,6 +375,9 @@ const Quiz = () => {
             {/* ملخص النتيجة */}
             <Card className="max-w-4xl mx-auto shadow-medium animate-scale-in mb-8 print:shadow-none print:mb-4">
               <CardContent className="p-8 print:p-4">
+                {/* رسالة النجاح */}
+                <SuccessResult />
+                
                 {/* رأس التقرير للطباعة */}
                 <div className="hidden print:block text-center mb-4 border-b pb-4">
                   <h1 className="text-xl font-bold">ابتدائية سعد بن أبي وقاص</h1>
