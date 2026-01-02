@@ -7665,6 +7665,25 @@ export const getQuestionsBySubIndicator = (standardId: string, subIndicatorId: s
     });
   }
   
+  // معايير لغتي الصف الثالث - توزيع حسب القطع النصية
+  if (standardId.startsWith("std-r3-")) {
+    const subIndicatorCode = subIndicatorId.split('-').pop();
+    return standardQuestions.filter(q => {
+      const text = q.text || "";
+      const passageKey = q.passage || "";
+      switch (subIndicatorCode) {
+        case "1": // اختبار 1: الأقمار الصناعية
+          return passageKey === "satellites" || text.includes("الأقمار") || text.includes("دانية") || text.includes("الفضاء") || text.includes("البث") || text.includes("التلفاز");
+        case "2": // اختبار 2: الإيثار
+          return passageKey === "altruism" || text.includes("الإيثار") || text.includes("فواز") || text.includes("الجرحى") || text.includes("اليرموك") || text.includes("القصة");
+        case "3": // اختبار 3: الحوت الأزرق
+          return passageKey === "blueWhale" || text.includes("الحوت") || text.includes("الأزرق") || text.includes("الحيتان") || text.includes("المحيط");
+        default:
+          return true;
+      }
+    });
+  }
+  
   // للمعايير الأخرى، إرجاع كل الأسئلة
   return standardQuestions;
 };
