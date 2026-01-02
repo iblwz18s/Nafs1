@@ -7665,23 +7665,22 @@ export const getQuestionsBySubIndicator = (standardId: string, subIndicatorId: s
     });
   }
   
-  // معايير لغتي الصف الثالث - توزيع حسب القطع النصية
+  // معايير لغتي الصف الثالث - توزيع الأسئلة بالتساوي على 3 اختبارات (10 أسئلة لكل اختبار)
   if (standardId.startsWith("std-r3-")) {
     const subIndicatorCode = subIndicatorId.split('-').pop();
-    return standardQuestions.filter(q => {
-      const text = q.text || "";
-      const passageKey = q.passage || "";
-      switch (subIndicatorCode) {
-        case "1": // اختبار 1: الأقمار الصناعية
-          return passageKey === "satellites" || text.includes("الأقمار") || text.includes("دانية") || text.includes("الفضاء") || text.includes("البث") || text.includes("التلفاز");
-        case "2": // اختبار 2: الإيثار
-          return passageKey === "altruism" || text.includes("الإيثار") || text.includes("فواز") || text.includes("الجرحى") || text.includes("اليرموك") || text.includes("القصة");
-        case "3": // اختبار 3: الحوت الأزرق
-          return passageKey === "blueWhale" || text.includes("الحوت") || text.includes("الأزرق") || text.includes("الحيتان") || text.includes("المحيط");
-        default:
-          return true;
-      }
-    });
+    const totalQuestions = standardQuestions.length;
+    const questionsPerTest = Math.ceil(totalQuestions / 3);
+    
+    switch (subIndicatorCode) {
+      case "1": // اختبار 1: الأسئلة من 1 إلى 10
+        return standardQuestions.slice(0, questionsPerTest);
+      case "2": // اختبار 2: الأسئلة من 11 إلى 20
+        return standardQuestions.slice(questionsPerTest, questionsPerTest * 2);
+      case "3": // اختبار 3: الأسئلة من 21 إلى 30
+        return standardQuestions.slice(questionsPerTest * 2);
+      default:
+        return standardQuestions;
+    }
   }
   
   // للمعايير الأخرى، إرجاع كل الأسئلة
