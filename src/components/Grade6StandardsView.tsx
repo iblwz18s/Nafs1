@@ -24,18 +24,18 @@ const Grade6StandardsView = ({ standards, onStartQuiz }: Grade6StandardsViewProp
     }));
   };
 
-  // فلترة معايير الصف السادس التي تحتوي على مؤشرات فرعية (لغتي أو الرياضيات أو العلوم)
-  const grade6Standards = standards.filter(
-    s => (s.id.startsWith('std-r6-') || s.id.startsWith('std-m6-') || s.id.startsWith('std-s6-')) && s.subIndicators && s.subIndicators.length > 0
+  // فلترة المعايير التي تحتوي على مؤشرات فرعية (الصف السادس: لغتي، رياضيات، علوم | الصف الثالث: رياضيات)
+  const filteredStandards = standards.filter(
+    s => (s.id.startsWith('std-r6-') || s.id.startsWith('std-m6-') || s.id.startsWith('std-s6-') || s.id.startsWith('std-m3-')) && s.subIndicators && s.subIndicators.length > 0
   );
 
-  if (grade6Standards.length === 0) {
+  if (filteredStandards.length === 0) {
     return null;
   }
 
   return (
     <div className="space-y-4">
-      {grade6Standards.map((standard, index) => (
+      {filteredStandards.map((standard, index) => (
         <Card 
           key={standard.id} 
           className="border border-border bg-card overflow-hidden"
