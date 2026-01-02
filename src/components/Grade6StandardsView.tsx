@@ -24,9 +24,9 @@ const Grade6StandardsView = ({ standards, onStartQuiz }: Grade6StandardsViewProp
     }));
   };
 
-  // فلترة المعايير التي تحتوي على مؤشرات فرعية (الصف السادس: لغتي، رياضيات، علوم | الصف الثالث: رياضيات)
+  // فلترة المعايير التي تحتوي على مؤشرات فرعية (الصف السادس: لغتي، رياضيات، علوم | الصف الثالث: رياضيات، لغتي)
   const filteredStandards = standards.filter(
-    s => (s.id.startsWith('std-r6-') || s.id.startsWith('std-m6-') || s.id.startsWith('std-s6-') || s.id.startsWith('std-m3-')) && s.subIndicators && s.subIndicators.length > 0
+    s => (s.id.startsWith('std-r6-') || s.id.startsWith('std-m6-') || s.id.startsWith('std-s6-') || s.id.startsWith('std-m3-') || s.id.startsWith('std-r3-')) && s.subIndicators && s.subIndicators.length > 0
   );
 
   if (filteredStandards.length === 0) {
