@@ -1,14 +1,13 @@
 import Stack from "@/components/Stack";
+import training1 from "@/assets/training/training-1.png";
+import training2 from "@/assets/training/training-2.png";
+import training3 from "@/assets/training/training-3.png";
+import training4 from "@/assets/training/training-4.png";
+import training5 from "@/assets/training/training-5.png";
 
-// صور مؤقتة للعرض - سيتم استبدالها لاحقاً
-const placeholderImages = [
-  "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=500&auto=format",
-  "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=500&auto=format",
-  "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=500&auto=format",
-  "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=500&auto=format",
-];
+const trainingImages = [training1, training2, training3, training4, training5];
 
-const cards = placeholderImages.map((src, i) => (
+const cards = trainingImages.map((src, i) => (
   <div key={i} className="w-full h-full">
     <img
       src={src}
@@ -22,11 +21,11 @@ const TrainingGallery = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
       <h1 className="text-3xl font-bold text-foreground mb-8">شواهد التدريب</h1>
-      <p className="text-muted-foreground mb-8 text-center">اسحب الصورة للتنقل بين الشواهد</p>
+      <p className="text-muted-foreground mb-8 text-center">اسحب الصورة أو انقر للتنقل بين الشواهد</p>
       <Stack
         cards={cards}
         randomRotation={true}
-        sensitivity={200}
+        sensitivity={80}
         sendToBackOnClick={true}
         autoplay={true}
         autoplayDelay={4000}
