@@ -6,8 +6,10 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { Loader2, Upload, UserPlus, LogOut, Trash2, Image } from "lucide-react";
+import { Loader2, Upload, UserPlus, LogOut, Trash2, Image, Pencil, Key } from "lucide-react";
 
 interface TrainingImage {
   id: string;
@@ -29,6 +31,12 @@ interface AdminPanelProps {
   onLogout: () => void;
 }
 
+// Helper function to normalize grade values
+const normalizeGrade = (grade: string): string => {
+  if (grade.startsWith("grade-")) return grade.replace("grade-", "");
+  return grade;
+};
+
 const AdminPanel = ({ onLogout }: AdminPanelProps) => {
   const [isUploading, setIsUploading] = useState(false);
   const [isAddingStudent, setIsAddingStudent] = useState(false);
@@ -42,6 +50,19 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
   const [parentName, setParentName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedGrade, setSelectedGrade] = useState("");
+
+  // Edit student state
+  const [editingStudent, setEditingStudent] = useState<Student | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [editStudentName, setEditStudentName] = useState("");
+  const [editParentName, setEditParentName] = useState("");
+  const [editPhoneNumber, setEditPhoneNumber] = useState("");
+  const [editGrade, setEditGrade] = useState("");
+  const [isUpdatingStudent, setIsUpdatingStudent] = useState(false);
+
+  // Delete confirmation state
+  const [studentToDelete, setStudentToDelete] = useState<Student | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchTrainingImages();
@@ -68,7 +89,7 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
     const { data, error } = await supabase
       .from("students")
       .select("*")
-      .order("grade", { ascending: true });
+      .order("student_name", { ascending: true });
 
     if (error) {
       console.error("Error fetching students:", error);
@@ -177,7 +198,7 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
         parent_name: parentName,
         phone_number: phoneNumber,
         pin_code: pinCode,
-        grade: selectedGrade,
+        grade: `grade-${selectedGrade}`,
       });
 
       if (error) {
@@ -198,12 +219,73 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
     }
   };
 
-  const handleDeleteStudent = async (student: Student) => {
+  const openEditDialog = (student: Student) => {
+    setEditingStudent(student);
+    setEditStudentName(student.student_name);
+    setEditParentName(student.parent_name);
+    setEditPhoneNumber(student.phone_number);
+    setEditGrade(normalizeGrade(student.grade));
+    setIsEditDialogOpen(true);
+  };
+
+  const handleUpdateStudent = async () => {
+    if (!editingStudent) return;
+
+    if (!editStudentName || !editParentName || !editPhoneNumber || !editGrade) {
+      toast.error("يرجى ملء جميع الحقول");
+      return;
+    }
+
+    if (editPhoneNumber.length !== 10 || !/^\d+$/.test(editPhoneNumber)) {
+      toast.error("رقم الجوال يجب أن يكون 10 أرقام");
+      return;
+    }
+
+    setIsUpdatingStudent(true);
+
+    try {
+      const newPinCode = editPhoneNumber.slice(-4);
+
+      const { error } = await supabase
+        .from("students")
+        .update({
+          student_name: editStudentName,
+          parent_name: editParentName,
+          phone_number: editPhoneNumber,
+          pin_code: newPinCode,
+          grade: `grade-${editGrade}`,
+        })
+        .eq("id", editingStudent.id);
+
+      if (error) {
+        toast.error("خطأ في تحديث بيانات الطالب: " + error.message);
+        return;
+      }
+
+      toast.success("تم تحديث بيانات الطالب بنجاح");
+      setIsEditDialogOpen(false);
+      setEditingStudent(null);
+      fetchStudents();
+    } catch (error) {
+      toast.error("حدث خطأ غير متوقع");
+    } finally {
+      setIsUpdatingStudent(false);
+    }
+  };
+
+  const confirmDeleteStudent = (student: Student) => {
+    setStudentToDelete(student);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteStudent = async () => {
+    if (!studentToDelete) return;
+
     try {
       const { error } = await supabase
         .from("students")
         .delete()
-        .eq("id", student.id);
+        .eq("id", studentToDelete.id);
 
       if (error) {
         toast.error("خطأ في حذف الطالب");
@@ -211,6 +293,8 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
       }
 
       toast.success("تم حذف الطالب بنجاح");
+      setIsDeleteDialogOpen(false);
+      setStudentToDelete(null);
       fetchStudents();
     } catch (error) {
       toast.error("حدث خطأ أثناء حذف الطالب");
@@ -228,6 +312,12 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
       .from("training-images")
       .getPublicUrl(filePath);
     return data.publicUrl;
+  };
+
+  // Get students by normalized grade
+  const getStudentsByGrade = (grade: string) => {
+    return students.filter((s) => normalizeGrade(s.grade) === grade)
+      .sort((a, b) => a.student_name.localeCompare(b.student_name, "ar"));
   };
 
   return (
@@ -406,7 +496,7 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
               ) : (
                 <div className="space-y-4">
                   {["3", "6"].map((grade) => {
-                    const gradeStudents = students.filter((s) => s.grade === grade);
+                    const gradeStudents = getStudentsByGrade(grade);
                     if (gradeStudents.length === 0) return null;
                     return (
                       <div key={grade}>
@@ -419,20 +509,34 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
                               key={student.id}
                               className="flex items-center justify-between p-3 bg-muted/50 rounded-lg"
                             >
-                              <div>
+                              <div className="flex-1">
                                 <p className="font-medium">{student.student_name}</p>
                                 <p className="text-sm text-muted-foreground">
                                   ولي الأمر: {student.parent_name} | الجوال: {student.phone_number}
                                 </p>
+                                <p className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                                  <Key className="w-3 h-3" />
+                                  رمز الدخول: <span className="font-mono font-bold">{student.pin_code}</span>
+                                </p>
                               </div>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-destructive hover:text-destructive"
-                                onClick={() => handleDeleteStudent(student)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-primary hover:text-primary"
+                                  onClick={() => openEditDialog(student)}
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-destructive hover:text-destructive"
+                                  onClick={() => confirmDeleteStudent(student)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -445,6 +549,90 @@ const AdminPanel = ({ onLogout }: AdminPanelProps) => {
           </Card>
         </TabsContent>
       </Tabs>
+
+      {/* Edit Student Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent dir="rtl">
+          <DialogHeader>
+            <DialogTitle>تعديل بيانات الطالب</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="editStudentName">اسم الطالب</Label>
+              <Input
+                id="editStudentName"
+                value={editStudentName}
+                onChange={(e) => setEditStudentName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="editParentName">اسم ولي الأمر</Label>
+              <Input
+                id="editParentName"
+                value={editParentName}
+                onChange={(e) => setEditParentName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="editPhoneNumber">رقم الجوال</Label>
+              <Input
+                id="editPhoneNumber"
+                value={editPhoneNumber}
+                onChange={(e) => setEditPhoneNumber(e.target.value)}
+                maxLength={10}
+                dir="ltr"
+              />
+              <p className="text-xs text-muted-foreground">
+                سيتم تحديث رمز الدخول تلقائياً لآخر 4 أرقام من الجوال
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label>الصف</Label>
+              <Select value={editGrade} onValueChange={setEditGrade}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">الصف الثالث</SelectItem>
+                  <SelectItem value="6">الصف السادس</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
+              إلغاء
+            </Button>
+            <Button onClick={handleUpdateStudent} disabled={isUpdatingStudent}>
+              {isUpdatingStudent && <Loader2 className="w-4 h-4 animate-spin ml-2" />}
+              حفظ التغييرات
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent dir="rtl">
+          <AlertDialogHeader>
+            <AlertDialogTitle>تأكيد حذف الطالب</AlertDialogTitle>
+            <AlertDialogDescription>
+              هل أنت متأكد من حذف الطالب "{studentToDelete?.student_name}"؟
+              <br />
+              لا يمكن التراجع عن هذا الإجراء.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel>إلغاء</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteStudent}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              حذف
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
