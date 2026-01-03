@@ -144,6 +144,18 @@ const Index = () => {
                 />
               ))}
             </div>
+            
+            {/* زر شواهد التدريب */}
+            <div className="mt-8 text-center">
+              <Button 
+                variant="outline" 
+                size="lg"
+                onClick={() => navigate("/training-gallery")}
+                className="border-primary/50 hover:border-primary hover:bg-primary/10"
+              >
+                📸 شواهد التدريب
+              </Button>
+            </div>
           </div>
         )}
 
