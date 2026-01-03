@@ -100,11 +100,15 @@ const Index = () => {
 
   return (
     <div 
-      className="min-h-screen bg-background bg-cover bg-center bg-no-repeat bg-fixed"
-      style={{ backgroundImage: "url('/images/nafs-background.jpeg')" }}
+      className="min-h-screen bg-background bg-cover bg-center bg-no-repeat bg-fixed md:bg-cover"
+      style={{ 
+        backgroundImage: "url('/images/nafs-background.jpeg')",
+        backgroundSize: 'auto 100%',
+        backgroundPosition: 'center bottom'
+      }}
     >
       {/* طبقة شفافة لتحسين قراءة المحتوى */}
-      <div className="min-h-screen bg-background/85 dark:bg-background/90">
+      <div className="min-h-screen bg-background/80 dark:bg-background/90 md:bg-background/85">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
