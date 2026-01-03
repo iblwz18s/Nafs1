@@ -13,7 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { grades, getSubjectsByGrade, getStandardsBySubject, getGradeById, getSubjectById } from "@/data/standards";
 import { ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
-import trainingIcon from "@/assets/training-icon.png";
+import trainingIcon from "@/assets/training-icon.gif";
 import familyIcon from "@/assets/family-icon.png";
 import { teacherData, studentsData, grade3Students, grade6Students } from "@/data/classData";
 
