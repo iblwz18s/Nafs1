@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import GradeCard from "@/components/GradeCard";
@@ -15,7 +15,8 @@ import { ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
 import trainingIcon from "@/assets/training-icon.gif";
 import familyIcon from "@/assets/family-icon.png";
-import { teacherData, studentsData, grade3Students, grade6Students } from "@/data/classData";
+import { teacherData } from "@/data/classData";
+import { supabase } from "@/integrations/supabase/client";
 
 type NavigationState = {
   selectedGrade: string | null;
@@ -44,14 +45,34 @@ const Index = () => {
   // Check if this grade+subject has teacher/student selection
   const hasClassData = selectedSubject ? !!teacherData[selectedSubject] : false;
   const teacher = hasClassData && selectedSubject ? teacherData[selectedSubject] : null;
-  const classStudents = hasClassData && selectedSubject ? studentsData[selectedSubject] : null;
 
-  // Get students list for parent login based on grade
-  const getStudentsByGrade = (gradeId: string) => {
-    if (gradeId === "grade-3") return grade3Students;
-    if (gradeId === "grade-6") return grade6Students;
-    return [];
+  // Fetch students from Supabase based on selected grade
+  const [classStudents, setClassStudents] = useState<string[]>([]);
+  
+  const normalizeGrade = (grade: string) => {
+    if (grade.startsWith("grade-")) return grade.replace("grade-", "");
+    return grade;
   };
+
+  useEffect(() => {
+    if (selectedSubject && hasClassData && selectedGrade) {
+      const fetchStudents = async () => {
+        const gradeNumber = normalizeGrade(selectedGrade);
+        const { data, error } = await supabase
+          .from("students")
+          .select("student_name, grade")
+          .order("student_name");
+        
+        if (!error && data) {
+          const filteredStudents = data
+            .filter(s => normalizeGrade(s.grade) === gradeNumber)
+            .map(s => s.student_name);
+          setClassStudents(filteredStudents);
+        }
+      };
+      fetchStudents();
+    }
+  }, [selectedSubject, hasClassData, selectedGrade]);
 
   const handleBack = () => {
     if (userType === "parent" && selectedStudent) {
@@ -242,9 +263,9 @@ const Index = () => {
         )}
 
         {/* اختيار الطالب */}
-        {selectedSubject && hasClassData && selectedTeacher && !selectedStudent && (
+        {selectedSubject && hasClassData && selectedTeacher && !selectedStudent && classStudents.length > 0 && (
           <StudentSelector 
-            students={classStudents!} 
+            students={classStudents} 
             onSelect={(student) => setSelectedStudent(student)} 
           />
         )}
