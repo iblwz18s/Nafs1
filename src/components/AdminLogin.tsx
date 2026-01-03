@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2, LogIn, UserPlus } from "lucide-react";
 
 interface AdminLoginProps {
   onLoginSuccess: () => void;
@@ -15,6 +15,7 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,13 +57,44 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
     }
   };
 
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/training-gallery`,
+        },
+      });
+
+      if (error) {
+        toast.error("خطأ في إنشاء الحساب: " + error.message);
+        return;
+      }
+
+      if (data.user) {
+        toast.success("تم إنشاء الحساب بنجاح! يرجى التواصل مع المطور لتفعيل صلاحيات المسؤول.");
+        setIsSignUp(false);
+      }
+    } catch (error) {
+      toast.error("حدث خطأ غير متوقع");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle className="text-center text-xl">دخول المسؤول</CardTitle>
+        <CardTitle className="text-center text-xl">
+          {isSignUp ? "إنشاء حساب مسؤول" : "دخول المسؤول"}
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">البريد الإلكتروني</Label>
             <Input
@@ -90,12 +122,23 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin ml-2" />
+            ) : isSignUp ? (
+              <UserPlus className="w-4 h-4 ml-2" />
             ) : (
               <LogIn className="w-4 h-4 ml-2" />
             )}
-            تسجيل الدخول
+            {isSignUp ? "إنشاء الحساب" : "تسجيل الدخول"}
           </Button>
         </form>
+        <div className="mt-4 text-center">
+          <Button
+            variant="link"
+            onClick={() => setIsSignUp(!isSignUp)}
+            className="text-muted-foreground"
+          >
+            {isSignUp ? "لديك حساب؟ تسجيل الدخول" : "ليس لديك حساب؟ إنشاء حساب جديد"}
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
