@@ -130,7 +130,7 @@ const Index = () => {
         {!selectedGrade && (
           <div className="animate-fade-in">
             <div className="text-center mb-6 md:mb-10">
-              <img src={logo} alt="شعار وزارة التعليم" className="h-28 md:h-56 lg:h-64 mx-auto mb-3 md:mb-4" />
+              <img src={logo} alt="شعار وزارة التعليم" className="h-40 md:h-56 lg:h-64 mx-auto mb-3 md:mb-4" />
               <h1 className="text-xl md:text-3xl font-bold text-primary mb-3 md:mb-6">اختبارات محاكاة نافس 2026</h1>
               <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 md:mb-3">اختر الصف الدراسي</h2>
               <p className="text-muted-foreground text-sm md:text-base">حدد الصف لبدء الاختبارات المحاكية.</p>
