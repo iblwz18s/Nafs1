@@ -151,9 +151,10 @@ const Index = () => {
                 variant="outline" 
                 size="lg"
                 onClick={() => navigate("/training-gallery")}
-                className="border-primary/50 hover:border-primary hover:bg-primary/10"
+                className="border-primary/50 hover:border-primary hover:bg-primary/10 gap-2"
               >
-                📸 شواهد التدريب
+                <img src={trainingIcon} alt="" className="w-6 h-6 object-contain" />
+                شواهد التدريب
               </Button>
             </div>
           </div>
