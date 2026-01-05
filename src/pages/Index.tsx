@@ -188,7 +188,7 @@ const Index = () => {
                 loop
                 muted
                 playsInline
-                className="w-full max-w-md mx-auto opacity-70"
+                className="w-full max-w-[200px] mx-auto"
               />
             </div>
           </div>
