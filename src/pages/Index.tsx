@@ -15,6 +15,7 @@ import { ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
 import trainingIcon from "@/assets/training-icon.gif";
 import familyIcon from "@/assets/family-icon.png";
+import backgroundVideo from "@/assets/background-video.webm";
 import { teacherData } from "@/data/classData";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -177,6 +178,18 @@ const Index = () => {
                 <img src={trainingIcon} alt="" className="w-6 h-6 object-contain" />
                 شواهد التدريب
               </Button>
+            </div>
+
+            {/* فيديو خلفية للجوال */}
+            <div className="mt-8 md:hidden">
+              <video
+                src={backgroundVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full max-w-md mx-auto opacity-70"
+              />
             </div>
           </div>
         )}
