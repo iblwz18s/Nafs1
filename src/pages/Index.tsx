@@ -189,6 +189,7 @@ const Index = () => {
                 muted
                 playsInline
                 className="w-full max-w-[200px] mx-auto"
+                style={{ backgroundColor: 'transparent' }}
               />
             </div>
           </div>
