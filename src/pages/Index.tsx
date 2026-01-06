@@ -15,6 +15,7 @@ import { ArrowRight } from "lucide-react";
 import logo from "@/assets/logo.png";
 import trainingIcon from "@/assets/training-icon.gif";
 import familyIcon from "@/assets/family-icon.png";
+import osamaVideo from "@/assets/osama-video.webm";
 
 import { teacherData } from "@/data/classData";
 import { supabase } from "@/integrations/supabase/client";
@@ -178,6 +179,19 @@ const Index = () => {
                 <img src={trainingIcon} alt="" className="w-6 h-6 object-contain" />
                 شواهد التدريب
               </Button>
+            </div>
+
+            {/* فيديو أسفل الشواهد */}
+            <div className="mt-8 flex justify-center">
+              <video
+                src={osamaVideo}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full max-w-[300px] rounded-lg"
+                style={{ backgroundColor: 'transparent' }}
+              />
             </div>
 
           </div>
