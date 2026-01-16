@@ -34,14 +34,14 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
 
       if (data.user) {
         // Check if user has admin role
-        const { data: roleData, error: roleError } = await supabase
-          .from("user_roles")
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
           .select("role")
-          .eq("user_id", data.user.id)
-          .eq("role", "admin")
-          .maybeSingle();
+          .eq("id", data.user.id)
+          .single();
 
-        if (roleError || !roleData) {
+        if (profileError || profile?.role !== "admin") {
+          console.error("Profile error:", profileError, "Role:", profile?.role);
           toast.error("ليس لديك صلاحيات المسؤول");
           await supabase.auth.signOut();
           return;
